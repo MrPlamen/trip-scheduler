@@ -1,0 +1,19 @@
+#hero-header {
+    padding: 12px 340px;
+    text-align: center;
+    background-color: black
+}
+
+header h1 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.hero-nav {
+    width: 800px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 0px;
+    color: white
+}

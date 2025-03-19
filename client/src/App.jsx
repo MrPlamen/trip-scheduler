@@ -6,7 +6,7 @@ import './App.css'
 function App() {
 
   return (
-    <div id="box">
+    <div id="hero-header">
       <Header />
       
       <main id="main-content">
