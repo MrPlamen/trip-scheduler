@@ -5,8 +5,9 @@
     border-radius: 20px;
     padding: 40px;
     box-sizing: border-box;
-    background: #d9e5f4;
-    box-shadow: 0px 0px 32px 0px #49535e, -14px -14px 20px #191c21;
+    background: white;
+    box-shadow: 0 4px 8px 3px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.3);
+    margin-top: 180px;
 }
 
 #register-page {
@@ -16,8 +17,10 @@
     border-radius: 20px;
     padding: 40px;
     box-sizing: border-box;
-    background: #d9e5f4;
-    box-shadow: 0px 0px 32px 0px #49535e, -14px -14px 20px #191c21;
+    background: white;
+    box-shadow: 0 4px 8px 3px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.3);
+    border: 2px solid gray;
+    margin-top: 180px;
 }
 
 .container {
@@ -29,7 +32,6 @@
     width: 100px;
     background: url("../images/icon-gamepad-2.png");
     margin: auto;
-    border-radius: 50%;
     box-sizing: border-box;
     box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
 }
