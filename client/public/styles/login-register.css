@@ -19,7 +19,6 @@
     box-sizing: border-box;
     background: white;
     box-shadow: 0 4px 8px 3px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.3);
-    border: 2px solid gray;
     margin-top: 180px;
 }
 
@@ -100,7 +99,7 @@ label[for="terms"]>input {
     margin-top: 30px;
     background: #778e9c;
     height: 60px;
-    border-radius: 20px;
+    border-radius: 50px;
     color: white;
     font-size: 26px;
     cursor: pointer;
