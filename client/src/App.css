@@ -4,5 +4,9 @@ body {
   align-items: center;
   background-color: rgba(146, 174, 195, 0.423);
   background-image: url('/images/clean-sky.jpg');
-  background-repeat: round;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh; 
+  margin: 0;
 }
