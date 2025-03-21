@@ -1,24 +1,24 @@
 #hero-header {
     padding: 12px 340px;
     text-align: center;
-    /* background-color: white;
-    border-radius: 132px; */
 }
 
 header h1 {
     color: white;
     margin-bottom: 28px;
     font-style: italic;
-    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 .hero-nav {
-    width: 800px;
+    width: 900px;
+    padding: 22px;
+    border-radius: 50px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     gap: 0px;
-    color: white;
+    color: rgb(0, 0, 0);
     font-weight: bold;
+    background-color: whitesmoke;
 }
 
