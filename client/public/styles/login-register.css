@@ -7,7 +7,7 @@
     box-sizing: border-box;
     background: white;
     box-shadow: 0 4px 8px 3px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.3);
-    margin-top: 120px;
+    margin-top: 180px;
 }
 
 #register-page {
@@ -19,7 +19,7 @@
     box-sizing: border-box;
     background: white;
     box-shadow: 0 4px 8px 3px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.3);
-    margin-top: 120px;
+    margin-top: 180px;
 }
 
 .container {
@@ -97,7 +97,7 @@ label[for="terms"]>input {
 
 .btn.submit {
     margin-top: 30px;
-    background: #778e9c;
+    background: #4e92d6;
     height: 60px;
     border-radius: 50px;
     color: white;
@@ -110,7 +110,7 @@ label[for="terms"]>input {
 
 .btn.submit:hover {
     color: white;
-    background-color: #8fa9b9;
+    background-color: #0173ba;
 }
 
 .container {
