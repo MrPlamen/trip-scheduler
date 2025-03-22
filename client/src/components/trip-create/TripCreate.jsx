@@ -1,10 +1,13 @@
+import tripService from "../../services/tripService";
+
 export default function TripCreate() {
 
     const submitAction = async (formData) => {
         const tripData = Object.fromEntries(formData);
 
-        console.log(data);
+        const result = await tripService.create(tripData);
 
+        console.log(result);
     };
 
     return (
