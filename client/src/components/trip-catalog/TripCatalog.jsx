@@ -20,7 +20,7 @@ export default function TripCatalog() {
 
             {trips.length > 0
                 ? trips.map(trip => <TripCatalogItem key={trip._id} {...trip} />)
-                : <h3 className="no-articles">No articles yet</h3>
+                : <h3 className="no-articles">No trips planned yet</h3>
             }
         </section>
     );
