@@ -17,7 +17,7 @@ export default function TripCatalog() {
             <div class="allGames">
                 <div class="allGames-info">
                     <img src="/images/avatar-1.jpg" />
-                    <h6>Baba mi</h6>
+                    <h6>England</h6>
                     <h2>July</h2>
                     <a href="#" class="details-button">Details</a>
                 </div>

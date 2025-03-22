@@ -1,6 +1,9 @@
 export default function TripCreate() {
 
-    const submitAction = async () => {
+    const submitAction = async (formData) => {
+        const tripData = Object.fromEntries(formData);
+
+        console.log(data);
 
     };
 
@@ -11,13 +14,13 @@ export default function TripCreate() {
 
                     <h1>Create a Trip</h1>
                     <label htmlFor="leg-title">Legendary title:</label>
-                    <input type="text" id="title" name="title" placeholder="Enter game title..." />
+                    <input type="text" id="title" name="title" placeholder="Enter trip title..." />
 
                     <label htmlFor="category">Category:</label>
-                    <input type="text" id="category" name="category" placeholder="Enter game category..." />
+                    <input type="text" id="category" name="category" placeholder="Enter trip category..." />
 
-                    <label htmlFor="levels">MaxLevel:</label>
-                    <input type="number" id="maxLevel" name="maxLevel" min="1" placeholder="1" />
+                    <label htmlFor="length">MaxLevel:</label>
+                    <input type="number" id="days" name="maxLevel" min="1" placeholder="1" />
 
                     <label htmlFor="game-img">Image:</label>
                     <input type="text" id="imageUrl" name="imageUrl" placeholder="Upload a photo..." />
