@@ -17,6 +17,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/trips/create' element={<TripCreate />} />
+          {/* <Route path='/trips/:tripId/details' element={<TripDetails />} /> */}
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route path='/trips' element={<TripCatalog />} />
