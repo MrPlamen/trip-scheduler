@@ -5,7 +5,7 @@ export default function TripCatalogItem({
     title,
     category,
     imageUrl,
-    length,
+    duration,
     summary
 }) {
     return (
@@ -14,7 +14,7 @@ export default function TripCatalogItem({
                 <img src={imageUrl} />
                 <h2>{title}</h2>
                 <h6>{category}</h6>
-                <h6>{`${length} days`}</h6>
+                <h6>{`${duration} days`}</h6>
                 <p>{summary}</p>
                 <Link to={`/trips/${_id}/details`} className="details-button">Details</Link>
             </div>

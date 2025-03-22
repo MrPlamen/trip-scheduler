@@ -5,6 +5,7 @@ import TripCreate from './components/trip-create/TripCreate'
 import Register from './components/register/Register'
 import Login from './components/login/Login'
 import TripCatalog from './components/trip-catalog/TripCatalog'
+import TripDetails from './components/trip-details/TripDetails'
 import './App.css'
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/trips/create' element={<TripCreate />} />
-          {/* <Route path='/trips/:tripId/details' element={<TripDetails />} /> */}
+          <Route path='/trips/:tripId/details' element={<TripDetails />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
           <Route path='/trips' element={<TripCatalog />} />

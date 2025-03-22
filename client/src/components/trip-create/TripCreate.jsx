@@ -28,8 +28,8 @@ export default function TripCreate() {
                     <label htmlFor="category">Category:</label>
                     <input type="text" id="category" name="category" placeholder="Enter trip category..." />
 
-                    <label htmlFor="length">Length:</label>
-                    <input type="number" id="days" name="length" min="1" placeholder="1" />
+                    <label htmlFor="duration">Length:</label>
+                    <input type="number" id="days" name="duration" min="1" placeholder="1" />
 
                     <label htmlFor="game-img">Image:</label>
                     <input type="text" id="imageUrl" name="imageUrl" placeholder="Upload a photo..." />
