@@ -12,7 +12,7 @@ export default function TripCatalogItem({
                 <img src={imageUrl} />
                 <h6>{category}</h6>
                 <h2>{title}</h2>
-                <Link to={`/games/${_id}/details`} className="details-button">Details</Link>
+                <Link to={`/trips/${_id}/details`} className="details-button">Details</Link>
             </div>
         </div>
     );
