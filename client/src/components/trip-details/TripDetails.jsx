@@ -27,12 +27,12 @@ export default function TripDetails() {
     }
 
     return (
-        <section id="trip-details">
+        <section id="game-details">
             <h1>Trip Details</h1>
             <div className="info-section">
 
-                <div className="trip-header">
-                    <img className="trip-img" src={trip.imageUrl} />
+                <div className="game-header">
+                    <img className="game-img" src={trip.imageUrl} />
                     <h1>{trip.title}</h1>
                     <span className="levels">Duration: {trip.duration}</span>
                     <p className="type">{trip.category}</p>
