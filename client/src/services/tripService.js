@@ -6,9 +6,9 @@ export default {
     async getAll() {
         const result = await request.get(baseUrl);
 
-        const games = Object.values(result);
+        const trips = Object.values(result);
 
-        return games;
+        return trips;
     },
     getOne(tripId) {
         return request.get(`${baseUrl}/${tripId}`);

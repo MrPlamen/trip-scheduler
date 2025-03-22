@@ -1,6 +1,18 @@
+import { useEffect, useState } from "react";
 import TripCatalogItem from "./trip-catalog-item/TripCatalogItem";
+import tripService from "../../services/tripService";
 
 export default function TripCatalog() {
+    const [trips, setTrips] = useState([]);
+
+    useEffect(() => {
+        tripService.getAll()
+            .then(result => {
+                setTrips(result)
+            });
+    }, []);
+
+    console.log(trips);
 
     return (
         <section id="catalog-page">

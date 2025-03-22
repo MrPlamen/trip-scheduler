@@ -1,13 +1,19 @@
+import { useNavigate } from "react-router";
 import tripService from "../../services/tripService";
 
 export default function TripCreate() {
+    const navigate = useNavigate();
 
     const submitAction = async (formData) => {
         const tripData = Object.fromEntries(formData);
 
-        const result = await tripService.create(tripData);
-
-        console.log(result);
+        try {
+            await tripService.create(tripData);
+            navigate('/trips');
+        } catch (error) {
+            console.error("Error creating trip: ", error);
+            alert("There was an error creating the trip. Please try again.");
+        }
     };
 
     return (
