@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import tripService from '../../services/tripService';
+import CommentsShow from '../comment-show/CommentsShow';
+import CommentsCreate from '../comments-create/CommentsCreate';
 
 export default function TripDetails() {
     const navigate = useNavigate();
@@ -40,21 +42,7 @@ export default function TripDetails() {
 
                 <p className="text">{trip.summary}</p>
 
-                {/* <!-- Bonus ( for Guests and Users ) --> */}
-                <div className="details-comments">
-                    <h2>Comments:</h2>
-                    <ul>
-                        {/* <!-- list all comments for current trip (If any) --> */}
-                        <li className="comment">
-                            <p>Content: I rate this one quite highly.</p>
-                        </li>
-                        <li className="comment">
-                            <p>Content: The best trip.</p>
-                        </li>
-                    </ul>
-                    {/* <!-- Display paragraph: If there are no trips in the database --> */}
-                    <p className="no-comment">No comments.</p>
-                </div>
+                <CommentsShow />
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this trip )  --> */}
                 <div className="buttons">
@@ -64,15 +52,7 @@ export default function TripDetails() {
                 </div>
             </div>
 
-            {/* <!-- Bonus --> */}
-            {/* <!-- Add Comment ( Only for logged-in users, which is not creators of the current trip ) --> */}
-            <article className="create-comment">
-                <label>Add new comment:</label>
-                <form className="form">
-                    <textarea name="comment" placeholder="Comment......"></textarea>
-                    <input className="btn submit" type="submit" value="Add Comment" />
-                </form>
-            </article>
+            <CommentsCreate />
 
         </section>
     );
