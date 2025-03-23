@@ -12,9 +12,17 @@ export default function TripEdit() {
         .then(setTrip);
     }, [tripId]);
 
+    const formAction = async (formData) => {
+        const tripData = Object.fromEntries(formData);
+
+        await tripService.edit(tripId, tripData);
+
+        navigate(`/trips/${tripId}/details`);
+    }
+
     return (
         <section id="edit-page" className="auth">
-            <form id="edit">
+            <form id="edit" action={formAction}> 
                 <div className="container">
 
                     <h1>Edit trip</h1>

@@ -16,6 +16,9 @@ export default {
     create(tripData) {
         return request.post(baseUrl, tripData);
     },
+    edit(tripId, tripData) {
+        return request.put(`${ baseUrl}/${tripId}`, {...tripData, _id: tripId});
+    },
     delete(tripId) {
         return request.delete(`${baseUrl}/${tripId}`);
     }
