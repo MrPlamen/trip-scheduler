@@ -7,9 +7,15 @@ import Login from './components/login/Login'
 import TripCatalog from './components/trip-catalog/TripCatalog'
 import TripDetails from './components/trip-details/TripDetails'
 import TripEdit from './components/trip-edit/TripEdit'
+import { useState } from 'react'
 import './App.css'
 
 function App() {
+  const [email, setEmail] = useState('');
+
+  const userLoginHandler = (email) => {
+    setEmail(email);
+  }
 
   return (
     <div id="hero-header">
@@ -22,7 +28,7 @@ function App() {
           <Route path='/trips/:tripId/details' element={<TripDetails />} />
           <Route path='/trips/:tripId/edit' element={<TripEdit />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={<Login onLogin={userLoginHandler}/>} />
           <Route path='/trips' element={<TripCatalog />} />
         </Routes>
       </main>
