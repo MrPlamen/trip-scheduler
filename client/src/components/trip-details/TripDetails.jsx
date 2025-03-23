@@ -58,7 +58,7 @@ export default function TripDetails() {
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this trip )  --> */}
                 <div className="buttons">
-                    <Link to="{`/trips/${tripId}/edit`}" className="button">Edit</Link>
+                    <Link to={`/trips/${tripId}/edit`} className="button">Edit</Link>
                     <button onClick={tripDeleteClickHandler} className="button">Delete</button> 
                     {/* TODO: Make it a link to modal for delete confirmation */}
                 </div>
