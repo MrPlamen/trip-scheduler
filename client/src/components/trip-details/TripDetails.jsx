@@ -5,7 +5,7 @@ import CommentsShow from '../comment-show/CommentsShow';
 import CommentsCreate from '../comments-create/CommentsCreate';
 
 export default function TripDetails({
-    email,
+    email
 }) {
     const navigate = useNavigate();
     const [trip, setTrip] = useState({});
@@ -54,7 +54,7 @@ export default function TripDetails({
                 </div>
             </div>
 
-            <CommentsCreate email={email}/>
+            <CommentsCreate email={email} tripId={tripId}/>
 
         </section>
     );

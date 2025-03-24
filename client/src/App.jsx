@@ -15,7 +15,7 @@ function App() {
 
   const userLoginHandler = (email) => {
     setEmail(email);
-  }
+  };
 
   return (
     <div id="hero-header">
