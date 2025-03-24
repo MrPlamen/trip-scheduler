@@ -4,7 +4,9 @@ import tripService from '../../services/tripService';
 import CommentsShow from '../comment-show/CommentsShow';
 import CommentsCreate from '../comments-create/CommentsCreate';
 
-export default function TripDetails() {
+export default function TripDetails({
+    email,
+}) {
     const navigate = useNavigate();
     const [trip, setTrip] = useState({});
     const { tripId } = useParams();
@@ -52,7 +54,7 @@ export default function TripDetails() {
                 </div>
             </div>
 
-            <CommentsCreate />
+            <CommentsCreate email={email}/>
 
         </section>
     );
