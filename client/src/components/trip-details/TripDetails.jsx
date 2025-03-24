@@ -31,6 +31,10 @@ export default function TripDetails({
         await tripService.delete(tripId);
 
         navigate('/trips');
+    };
+
+    const commentCreateHandler = (newComment) => {
+        setComments(state => [...state, newComment]);
     }
 
     return (
@@ -57,7 +61,11 @@ export default function TripDetails({
                 </div>
             </div>
 
-            <CommentsCreate email={email} tripId={tripId}/>
+            <CommentsCreate 
+            email={email} 
+            tripId={tripId}
+            onCreate = {commentCreateHandler}
+            />
 
         </section>
     );
