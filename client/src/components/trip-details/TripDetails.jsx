@@ -3,19 +3,22 @@ import { Link, useNavigate, useParams } from 'react-router';
 import tripService from '../../services/tripService';
 import CommentsShow from '../comment-show/CommentsShow';
 import CommentsCreate from '../comments-create/CommentsCreate';
+import commentService from '../../services/commentService';
 
 export default function TripDetails({
     email
 }) {
     const navigate = useNavigate();
     const [trip, setTrip] = useState({});
+    const [comments, setComments] = useState([]);
     const { tripId } = useParams();
 
     useEffect(() => {
-        (async() => {
-            const result = await tripService.getOne(tripId);
-            setTrip(result);
-        })();
+            tripService.getOne(tripId)
+                .then(setTrip);
+
+            commentService.getAll(tripId)
+                .then(setComments)    
     }, [tripId]);
 
     const tripDeleteClickHandler = async () => {
@@ -44,7 +47,7 @@ export default function TripDetails({
 
                 <p className="text">{trip.summary}</p>
 
-                <CommentsShow />
+                <CommentsShow comments={comments}/>
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this trip )  --> */}
                 <div className="buttons">
