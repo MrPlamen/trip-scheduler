@@ -1,16 +1,30 @@
+import { useActionState } from "react";
 import { Link, useNavigate } from "react-router";
+import { useLogin } from "../../api/authApi";
 
 export default function Login({
     onLogin,
 }) {
     const navigate = useNavigate();
-    const loginAction = (formData) => {
-        const email = formData.get('email');
-        
-        onLogin(email);
+    const { login } = useLogin();
 
-        navigate('/trips');
-    }
+    const loginHandler = async (previousState, formData) => {
+        const formValues = Object.fromEntries(formData);
+
+        const result = await login(formValues.email, formValues.password);
+
+        console.log(result);
+        
+        // onLogin(formValues.email);
+
+        // navigate('/trips');
+
+        return formValues;
+    };
+
+    const [formValues, loginAction, isPending] = useActionState(loginHandler, {email: '', password: ''});
+
+    console.log(formValues);
 
     return (
         <section id="login-page" className="auth">
@@ -24,7 +38,7 @@ export default function Login({
 
                     <label htmlFor="login-pass">Password:</label>
                     <input type="password" id="login-password" name="password" />
-                    <input type="submit" className="btn submit" value="Login" />
+                    <input type="submit" className="btn submit" value="Login" disabled={isPending} />
                     <p className="field">
                         <span>If you don't have profile click <Link to="/register">here</Link></span>
                     </p>
