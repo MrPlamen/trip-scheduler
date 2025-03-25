@@ -8,23 +8,19 @@ export default function Login({
     const navigate = useNavigate();
     const { login } = useLogin();
 
-    const loginHandler = async (previousState, formData) => {
+    const loginHandler = async (_, formData) => {
         const formValues = Object.fromEntries(formData);
 
-        const result = await login(formValues.email, formValues.password);
-
-        console.log(result);
+        const authData = await login(formValues.email, formValues.password);
         
-        // onLogin(formValues.email);
+        onLogin(authData);
 
-        // navigate('/trips');
+        navigate('/trips');
 
         return formValues;
     };
 
-    const [formValues, loginAction, isPending] = useActionState(loginHandler, {email: '', password: ''});
-
-    console.log(formValues);
+    const [_, loginAction, isPending] = useActionState(loginHandler, {email: '', password: ''});
 
     return (
         <section id="login-page" className="auth">
