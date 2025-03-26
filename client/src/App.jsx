@@ -10,6 +10,7 @@ import TripCatalog from './components/trip-catalog/TripCatalog'
 import TripDetails from './components/trip-details/TripDetails'
 import TripEdit from './components/trip-edit/TripEdit'
 import './App.css'
+import Logout from './components/logout/Logout'
 
 function App() {
   const [authData, setAuthData] = useState({});
@@ -32,6 +33,7 @@ function App() {
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='/trips' element={<TripCatalog />} />
+            <Route path='/logout' element={<Logout />} />
           </Routes>
         </main>
       </div>
