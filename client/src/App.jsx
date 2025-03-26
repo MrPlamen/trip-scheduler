@@ -11,10 +11,10 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-  const [email, setEmail] = useState('');
+  const [authData, setAuthData] = useState({});
 
-  const userLoginHandler = (authData) => {
-    setEmail(authData.email);
+  const userLoginHandler = (resultData) => {
+    setAuthData(resultData);
   };
 
   return (
@@ -25,7 +25,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/trips/create' element={<TripCreate />} />
-          <Route path='/trips/:tripId/details' element={<TripDetails email={email} />} />
+          <Route path='/trips/:tripId/details' element={<TripDetails email={authData.email} />} />
           <Route path='/trips/:tripId/edit' element={<TripEdit />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login onLogin={userLoginHandler}/>} />
