@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import tripService from '../../services/tripService';
 import CommentsShow from '../comment-show/CommentsShow';
 import CommentsCreate from '../comments-create/CommentsCreate';
 import commentService from '../../services/commentService';
+import { UserContext } from '../../contexts/UserContext';
 
-export default function TripDetails({
-    email
-}) {
+export default function TripDetails() {
     const navigate = useNavigate();
+    const { email } = useContext(UserContext);
     const [trip, setTrip] = useState({});
     const [comments, setComments] = useState([]);
     const { tripId } = useParams();
