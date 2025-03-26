@@ -30,7 +30,7 @@ function App() {
             <Route path='/trips/:tripId/details' element={<TripDetails />} />
             <Route path='/trips/:tripId/edit' element={<TripEdit />} />
             <Route path='/register' element={<Register />} />
-            <Route path='/login' element={<Login onLogin={userLoginHandler} />} />
+            <Route path='/login' element={<Login />} />
             <Route path='/trips' element={<TripCatalog />} />
           </Routes>
         </main>
