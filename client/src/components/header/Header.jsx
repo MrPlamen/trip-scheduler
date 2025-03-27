@@ -14,7 +14,7 @@ export default function Header() {
                 {email ? (
                     <>
                         <Link to="/trips/create">Create trip</Link>
-                        <Link to="/logout">Logout</Link>
+                        <Link to="/logout">Logout <span className="logged-email">({email})</span></Link>
                     </>
                 )
                 : (

@@ -54,3 +54,9 @@ body {
 body {
   overflow-x: hidden;
 }
+
+.logged-email {
+  color: rgb(73, 73, 73);
+  font-weight: 200;
+  font-size: 15px;
+}

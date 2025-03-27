@@ -1,19 +1,17 @@
-import { useNavigate } from "react-router";
-import tripService from "../../services/tripService";
+import { useNavigate } from 'react-router';
+
+import { useCreateTrip } from '../../api/tripApi';
 
 export default function TripCreate() {
     const navigate = useNavigate();
+    const { create: createTrip } = useCreateTrip();
 
     const submitAction = async (formData) => {
         const tripData = Object.fromEntries(formData);
 
-        try {
-            await tripService.create(tripData);
-            navigate('/trips');
-        } catch (error) {
-            console.error("Error creating trip: ", error);
-            alert("There was an error creating the trip. Please try again.");
-        }
+        await createTrip(tripData);
+
+        navigate('/trips');
     };
 
     return (
@@ -31,7 +29,7 @@ export default function TripCreate() {
                     <label htmlFor="duration">Length:</label>
                     <input type="number" id="days" name="duration" min="1" placeholder="1" />
 
-                    <label htmlFor="game-img">Image:</label>
+                    <label htmlFor="trip-img">Image:</label>
                     <input type="text" id="imageUrl" name="imageUrl" placeholder="Upload a photo..." />
 
                     <label htmlFor="summary">Summary:</label>
