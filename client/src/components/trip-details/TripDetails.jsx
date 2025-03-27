@@ -5,18 +5,16 @@ import CommentsShow from '../comment-show/CommentsShow';
 import CommentsCreate from '../comments-create/CommentsCreate';
 import commentService from '../../services/commentService';
 import { UserContext } from '../../contexts/UserContext';
+import { useTrip } from '../../api/tripApi';
 
 export default function TripDetails() {
     const navigate = useNavigate();
     const { email } = useContext(UserContext);
-    const [trip, setTrip] = useState({});
     const [comments, setComments] = useState([]);
     const { tripId } = useParams();
+    const { trip } = useTrip(tripId);
 
     useEffect(() => {
-            tripService.getOne(tripId)
-                .then(setTrip);
-
             commentService.getAll(tripId)
                 .then(setComments)    
     }, [tripId]);
