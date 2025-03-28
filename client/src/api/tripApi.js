@@ -4,18 +4,6 @@ import useAuth from "../hooks/useAuth";
 
 const baseUrl = `http://localhost:3030/data/trips`;
 
-export default {
-    getOne(tripId) {
-        return request.get(`${baseUrl}/${tripId}`);
-    },
-    edit(tripId, tripData) {
-        return request.put(`${ baseUrl}/${tripId}`, {...tripData, _id: tripId});
-    },
-    delete(tripId) {
-        return request.delete(`${baseUrl}/${tripId}`);
-    }
-};
-
 export const useTrips = () => {
     const [trips, setTrips] = useState([]);
 
