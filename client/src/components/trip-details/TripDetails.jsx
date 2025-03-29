@@ -1,18 +1,18 @@
-import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
-import tripService from '../../services/tripService';
 import CommentsShow from '../comment-show/CommentsShow';
 import CommentsCreate from '../comments-create/CommentsCreate';
 import commentService from '../../services/commentService';
-import { UserContext } from '../../contexts/UserContext';
-import { useTrip } from '../../api/tripApi';
+import { useDeleteTrip, useTrip } from '../../api/tripApi';
+import useAuth from '../../hooks/useAuth';
+import { useEffect, useState } from 'react';
 
 export default function TripDetails() {
     const navigate = useNavigate();
-    const { email } = useContext(UserContext);
+    const { email } = useAuth();
     const [comments, setComments] = useState([]);
     const { tripId } = useParams();
     const { trip } = useTrip(tripId);
+    const { deleteTrip} = useDeleteTrip();
 
     useEffect(() => {
             commentService.getAll(tripId)
@@ -26,7 +26,7 @@ export default function TripDetails() {
             return;
         }
 
-        await tripService.delete(tripId);
+        await deleteTrip(tripId);
 
         navigate('/trips');
     };

@@ -1,21 +1,16 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import tripService from "../../services/tripService";
+import { useEditTrip, useTrip } from "../../api/tripApi";
 
 export default function TripEdit() {
     const navigate = useNavigate();
     const { tripId } = useParams();
-    const [trip, setTrip] = useState({});
-
-    useEffect(() => {
-        tripService.getOne(tripId)
-        .then(setTrip);
-    }, [tripId]);
+    const { trip } = useTrip(tripId);
+    const { edit } = useEditTrip();
 
     const formAction = async (formData) => {
         const tripData = Object.fromEntries(formData);
 
-        await tripService.edit(tripId, tripData);
+        await edit(tripId, tripData);
 
         navigate(`/trips/${tripId}/details`);
     }
