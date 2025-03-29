@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 
 export default function TripDetails() {
     const navigate = useNavigate();
-    const { email } = useAuth();
+    const { email, _id: userId } = useAuth();
     const [comments, setComments] = useState([]);
     const { tripId } = useParams();
     const { trip } = useTrip(tripId);
@@ -35,6 +35,8 @@ export default function TripDetails() {
         setComments(state => [...state, newComment]);
     }
 
+    const isOwner = userId === trip._ownerId;
+
     return (
         <section id="game-details">
             <h1>Trip Details</h1>
@@ -51,12 +53,13 @@ export default function TripDetails() {
 
                 <CommentsShow comments={comments}/>
 
-                {/* <!-- Edit/Delete buttons ( Only for creator of this trip )  --> */}
+                {isOwner && (
                 <div className="buttons">
                     <Link to={`/trips/${tripId}/edit`} className="button">Edit</Link>
                     <button onClick={tripDeleteClickHandler} className="button">Delete</button> 
                     {/* TODO: Make it a link to modal for delete confirmation */}
                 </div>
+                )}
             </div>
 
             <CommentsCreate 
