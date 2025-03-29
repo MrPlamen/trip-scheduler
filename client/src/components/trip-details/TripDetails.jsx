@@ -4,38 +4,40 @@ import CommentsCreate from '../comments-create/CommentsCreate';
 import commentService from '../../services/commentService';
 import { useDeleteTrip, useTrip } from '../../api/tripApi';
 import useAuth from '../../hooks/useAuth';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 export default function TripDetails() {
     const navigate = useNavigate();
     const { email, _id: userId } = useAuth();
-    const [comments, setComments] = useState([]);
     const { tripId } = useParams();
     const { trip } = useTrip(tripId);
-    const { deleteTrip} = useDeleteTrip();
-
+    const { deleteTrip } = useDeleteTrip();
+    
+    const [comments, setComments] = useState([]);
+    
     useEffect(() => {
-            commentService.getAll(tripId)
-                .then(setComments)    
+        const fetchComments = async () => {
+            const fetchedComments = await commentService.getAll(tripId);
+            setComments(fetchedComments);
+        };
+
+        fetchComments();
     }, [tripId]);
 
-    const tripDeleteClickHandler = async () => {
+    const tripDeleteClickHandler = useCallback(async () => {
         const hasConfirm = confirm(`Are you sure you want to delete ${trip.title}?`);
-
-        if (!hasConfirm) {
-            return;
-        }
+        
+        if (!hasConfirm) return;
 
         await deleteTrip(tripId);
-
         navigate('/trips');
-    };
+    }, [tripId, deleteTrip, navigate, trip.title]);
 
-    const commentCreateHandler = (newComment) => {
-        setComments(state => [...state, newComment]);
-    }
+    const commentCreateHandler = useCallback((newComment) => {
+        setComments((prevState) => [...prevState, newComment]);
+    }, []);
 
-    const isOwner = userId === trip._ownerId;
+    const isOwner = userId === trip?._ownerId;
 
     return (
         <section id="game-details">
@@ -43,7 +45,7 @@ export default function TripDetails() {
             <div className="info-section">
 
                 <div className="game-header">
-                    <img className="game-img" src={trip.imageUrl} />
+                    <img className="game-img" src={trip.imageUrl} alt={trip.title} />
                     <h1>{trip.title}</h1>
                     <span className="levels">Duration: {trip.duration}</span>
                     <p className="type">{trip.category}</p>
@@ -51,23 +53,21 @@ export default function TripDetails() {
 
                 <p className="text">{trip.summary}</p>
 
-                <CommentsShow comments={comments}/>
+                <CommentsShow comments={comments} />
 
                 {isOwner && (
-                <div className="buttons">
-                    <Link to={`/trips/${tripId}/edit`} className="button">Edit</Link>
-                    <button onClick={tripDeleteClickHandler} className="button">Delete</button> 
-                    {/* TODO: Make it a link to modal for delete confirmation */}
-                </div>
+                    <div className="buttons">
+                        <Link to={`/trips/${tripId}/edit`} className="button">Edit</Link>
+                        <button onClick={tripDeleteClickHandler} className="button">Delete</button>
+                    </div>
                 )}
             </div>
 
             <CommentsCreate 
-            email={email} 
-            tripId={tripId}
-            onCreate = {commentCreateHandler}
+                email={email} 
+                tripId={tripId}
+                onCreate={commentCreateHandler}
             />
-
         </section>
     );
 }
