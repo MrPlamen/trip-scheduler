@@ -1,7 +1,7 @@
-#visit-items > div {
+/* .visit-item-card {
     margin-bottom: 32px;
-}
+} */
 
-#visit-items img {
+.visit-item-card img {
     width: 85px;
 }
