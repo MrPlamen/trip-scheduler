@@ -10,9 +10,9 @@ header h1 {
 }
 
 .hero-nav {
-    width: 900px;
-    padding: 22px;
-    border-radius: 20px;
+    width: 100vw;
+    padding: 22px 26vw;
+    /* border-radius: 20px; */
     display: flex;
     flex-direction: row;
     justify-content: space-around;

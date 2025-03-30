@@ -1649,7 +1649,41 @@
     			_createdOn: 1616237272948,
     			_updatedOn: 1616237293676
     		}
-    	}
+    	},
+        trips: [
+            {
+                "_ownerId": "5e06bbdb-cbc4-4f81-84df-bff5fc9621c2",
+                "title": "Bansko",
+                "category": "mountain",
+                "duration": "3",
+                "imageUrl": "https://bimg.abv.bg/banners/HTML5/Native/v3_NI_KitKat_1203.jpg",
+                "summary": "ighuerg g brgh uighui hbg ",
+                "_createdOn": 1743109194813,
+                "_id": "54e2bd32-9aac-45d2-9e70-f5f6c65dd7dc"
+            },
+            {
+                "title": "Casablanca",
+                "category": "summer vacation",
+                "duration": "14",
+                "imageUrl": "https://img.abv.bg/home/vec4d36d146eea9d68d2379a8f3858389d.jpg",
+                "summary": "fsdv vv svs fv vf vsfv fvsdfv",
+                "_id": "b6b0ab4a-c1ba-4a76-981e-0505682bbb42",
+                "_createdOn": 1743243502967,
+                "_ownerId": "5e06bbdb-cbc4-4f81-84df-bff5fc9621c2",
+                "_updatedOn": 1743243537985
+            },
+            {
+                "title": "Sweden",
+                "category": "excursion",
+                "duration": "44",
+                "imageUrl": "https://wise.com/imaginary-v2/8ec5fdcf8ac18d5fadbffccfc1ca09f1.jpg?width=1200",
+                "summary": "Stockholm (/ˈstɒkhoʊ(l)m/;[10] Swedish: [ˈstɔ̂kː(h)ɔlm] ⓘ)[11] is the capital and most populous city of Sweden, as well as the largest urban area in the Nordic countries. Approximately 1 million people live in the municipality,[12] with 1.6 million in the urban area,[13] and 2.5 million in the metropolitan area.[12] The city stretches across fourteen islands where Lake Mälaren flows into the Baltic Sea. Outside the city to the east, and along the coast, is the island chain of the Stockholm archipelago. The area has been settled since the Stone Age, in the 6th millennium BC, and was founded as a city in 1252 by Swedish statesman Birger Jarl. The city serves as the county seat of Stockholm County",
+                "_id": "0646037d-8495-4511-a571-627d05900163",
+                "_createdOn": 1743269804009,
+                "_updatedOn": 1743277909896,
+                "_ownerId": "5bc846d4-6110-4669-a16e-11af6406b285",
+            }
+        ]
     };
     var rules$1 = {
     	users: {

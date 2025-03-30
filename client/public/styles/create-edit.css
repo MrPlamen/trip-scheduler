@@ -42,3 +42,7 @@ textarea {
     box-shadow: inset 6px 6px 6px #c0c2c5, inset -6px -6px 6px white;
 }
 
+.create-comment textarea {
+    padding: 22px;
+}
+
