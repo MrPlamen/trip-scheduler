@@ -20,6 +20,11 @@ export default function TripDetails() {
     const [likes, setLikes] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
     const [visitItems, setVisitItems] = useState([]); 
+    const [newVisitItem, setNewVisitItem] = useState({
+        title: '',
+        description: '',
+        imageUrl: ''
+    });
 
     // Fetch comments and likes based on tripId
     useEffect(() => {
@@ -38,11 +43,8 @@ export default function TripDetails() {
             try {
                 const fetchedVisitItems = await request.get('http://localhost:3030/jsonstore/visitItems');
                 
-                console.log(fetchedVisitItems); 
-                
                 if (fetchedVisitItems) {
-                    console.log(Object.values(fetchedVisitItems)[0].title);
-                    const filteredVisitItems = Object.values(fetchedVisitItems).filter(item => item._id !== 0);
+                    const filteredVisitItems = Object.values(fetchedVisitItems).filter(item => item.tripId === tripId);
                     setVisitItems(filteredVisitItems);
                 } else {
                     setVisitItems([]); 
@@ -55,7 +57,7 @@ export default function TripDetails() {
         fetchComments();
         fetchLikes();
         fetchVisitItems();
-    }, [tripId, email]); 
+    }, [tripId, email]);
 
     // Handle like
     const likeHandler = async () => {
@@ -93,6 +95,47 @@ export default function TripDetails() {
     const commentCreateHandler = useCallback((newComment) => {
         setComments((prevState) => [...prevState, newComment]);
     }, []);
+
+    // Handle visit item creation
+    const visitItemCreateHandler = async (event) => {
+        event.preventDefault();
+
+        // Construct the new visit item data
+        const newItem = {
+            ...newVisitItem,
+            tripId,
+            _ownerId: userId,  // Assuming the current user is the owner
+            _createdOn: Date.now()
+        };
+
+        try {
+            // POST request to create a new visit item
+            await request.post('http://localhost:3030/jsonstore/visitItems', newItem);
+
+            // Update state to include the new visit item
+            setVisitItems((prevState) => [...prevState, newItem]);
+
+            // Clear the form fields after submission
+            setNewVisitItem({
+                title: '',
+                description: '',
+                imageUrl: ''
+            });
+
+            console.log('Visit item created successfully');
+        } catch (error) {
+            console.error('Error creating visit item:', error);
+        }
+    };
+
+    // Handle input change for visit item form
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setNewVisitItem((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
     const isOwner = userId === trip?._ownerId;
 
@@ -141,6 +184,48 @@ export default function TripDetails() {
                 visitItems={visitItems} 
                 onLike={likeHandler} 
                 onAddComment={commentCreateHandler} />
+
+            {/* Create Visit Item Form Section */}
+            {isOwner && (
+                <section id="create-visit-item">
+                    <h2>Create Visit Item</h2>
+                    <form onSubmit={visitItemCreateHandler}>
+                        <div>
+                            <label htmlFor="title">Title:</label>
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                value={newVisitItem.title}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="description">Description:</label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                value={newVisitItem.description}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="imageUrl">Image URL:</label>
+                            <input
+                                type="url"
+                                id="imageUrl"
+                                name="imageUrl"
+                                value={newVisitItem.imageUrl}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <button type="submit" className="button">Create Visit Item</button>
+                    </form>
+                </section>
+            )}
         </>
     );
 }

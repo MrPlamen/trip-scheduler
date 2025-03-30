@@ -26,24 +26,29 @@ export default function VisitItems({ visitItems }) {
     return (
         <div id="visit-items">
             <h2>Visit Items</h2>
-            {Object.values(visitItems).length > 0 ? (
-                Object.values(visitItems).map((item) => (
-                    <div key={item._id} className="visit-item-card">
-                        <img src={item.imageUrl} alt={item.title} />
-                        <h3>{item.title}</h3>
-                        <p>{item.description}</p>
-                        <span>Likes: {getLikeCount(item._id)}</span>
-                        {/* Comments */}
-                        <div>
-                            {item.comments?.map((comment, index) => (
-                                <div key={index}>
-                                    <p>{comment.content}</p>
-                                    <small>by {comment.userId}</small>
-                                </div>
-                            ))}
+            {Object.values(visitItems)?.length > 0 ? (
+                Object.values(visitItems).map((item) => {
+                    // Ensure 'item' is valid before trying to access its properties
+                    if (!item) return null;
+
+                    return (
+                        <div key={item._id} className="visit-item-card">
+                            <img src={item.imageUrl} alt={item.title} />
+                            <h3>{item.title}</h3>
+                            <p>{item.description}</p>
+                            <span>Likes: {getLikeCount(item._id)}</span>
+                            {/* Comments */}
+                            <div>
+                                {item.comments?.map((comment, index) => (
+                                    <div key={index}>
+                                        <p>{comment.content}</p>
+                                        <small>by {comment.userId}</small>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                ))
+                    );
+                })
             ) : (
                 <p>No visit items for this trip yet.</p>
             )}
