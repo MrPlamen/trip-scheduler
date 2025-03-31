@@ -62,8 +62,8 @@ export default function TripDetails() {
     // Handle like
     const likeHandler = async () => {
         try {
-            const newLike = { email, tripId, like: true };
-            await likesService.create(email, tripId, true);
+            const newLike = { email, tripId, like: true, userId };
+            await likesService.createTripLike(email, tripId, true, userId);
             setLikes((prevLikes) => [...prevLikes, newLike]);
             setIsLiked(true);
         } catch (error) {

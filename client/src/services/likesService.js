@@ -10,8 +10,8 @@ export default {
 
         return tripLikes;
     },
-    create(email, tripId, like) {
-        return request.post(baseUrl, { email, tripId, like });
+    createTripLike(email, tripId, like, userId) {
+        return request.post(baseUrl, { email, tripId, like, userId });
     },
 
     async delete(email, tripId) {
