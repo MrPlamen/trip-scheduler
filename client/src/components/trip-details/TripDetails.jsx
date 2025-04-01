@@ -182,6 +182,8 @@ export default function TripDetails() {
             {/* Visit Items Section */}
             <VisitItems 
                 visitItems={visitItems} 
+                email={email} 
+                userId={userId}
                 onLike={likeHandler} 
                 onAddComment={commentCreateHandler} />
 
