@@ -23,26 +23,20 @@ export default function VisitItems({ visitItems, email, userId }) {
         };
 
         fetchLikes();
-    }, [likedItems]);  // Empty array means this runs once on mount
+    }, [likedItems, isLiked]);  // Empty array means this runs once on mount
 
-    const getLikeCount = (itemId) => {
+    const getLikeCount = (visitItemId) => {
         // Filter likes to count how many likes this particular visit item has
-        return Object.values(likes).filter(like => like.visitItemId === itemId).length;
+        return Object.values(likes).filter(like => like.visitItemId === visitItemId).length;
     };
 
-    const likeHandler = async (itemId) => {
+    const likeHandler = async (visitItemId) => {
         try {
-            // Ensure itemId is valid before liking the item
-            if (!itemId) {
-                console.error('Invalid itemId for liking');
-                return;
-            }
-
             // Create the new like object
-            const newLike = { email, visitItemId: itemId, like: true, userId };
+            const newLike = { email, visitItemId: visitItemId, like: true, userId };
 
             // Call the service to create the like
-            await itemLikesService.createItemLike(email, itemId, true, userId);
+            await itemLikesService.createItemLike(email, visitItemId, true, userId);
 
             // Safely update the likes state
             setLikes((prevLikes) => {
@@ -55,7 +49,7 @@ export default function VisitItems({ visitItems, email, userId }) {
             // Update the liked status for this specific item
             setLikedItems((prevLikedItems) => ({
                 ...prevLikedItems,
-                [itemId]: true,  // Mark the specific item as liked
+                [visitItemId]: true,  // Mark the specific item as liked
             }));
 
             setIsLiked(true);
@@ -65,20 +59,20 @@ export default function VisitItems({ visitItems, email, userId }) {
     };
 
     // Handle unlike
-    const unlikeHandler = async (itemId) => {
+    const unlikeHandler = async (visitItemId) => {
         try {
-            await itemLikesService.delete(email, itemId);
+            await itemLikesService.delete(email, visitItemId);
             
             // Safeguard: Ensure prevLikes is an array before calling .filter
             setLikes((prevLikes) => {
                 // Make sure prevLikes is an array, or return an empty array if not
                 const likesArray = Array.isArray(prevLikes) ? prevLikes : [];
-                return likesArray.filter(like => like.email !== email && like.visitItemId !== itemId);
+                return likesArray.filter(like => like.email !== email && like.visitItemId !== visitItemId);
             });
     
             setLikedItems((prevLikedItems) => ({
                 ...prevLikedItems,
-                [itemId]: false,  // Mark the specific item as not liked
+                [visitItemId]: false,  // Mark the specific item as not liked
             }));
     
             setIsLiked(false);
@@ -95,6 +89,10 @@ export default function VisitItems({ visitItems, email, userId }) {
                     // Ensure 'item' is valid before trying to access its properties
                     if (!item) return null;
 
+                    const userLikeForItem = Object.values(likes).find(like =>
+                        like.email === email && like.visitItemId === item._id
+                      );
+
                     return (
                         <div key={item._id} className="visit-item-card">
                             <img src={item.imageUrl} alt={item.title} />
@@ -102,7 +100,8 @@ export default function VisitItems({ visitItems, email, userId }) {
                             <p>{item.description}</p>
                             <span>Likes: {getLikeCount(item._id)}</span>
                             <div className="likes-section">
-                                {likedItems[item._id] ? (
+                                {/* Only show Unlike button if the user has liked the item */}
+                                {userLikeForItem ? (
                                     <button onClick={() => unlikeHandler(item._id)} className="button">Unlike</button>
                                 ) : (
                                     <button onClick={() => likeHandler(item._id)} className="button">Like</button>
