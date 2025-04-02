@@ -1,13 +1,17 @@
 import { useNavigate } from 'react-router';
-
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 import { useCreateTrip } from '../../api/tripApi';
 
 export default function TripCreate() {
     const navigate = useNavigate();
-    const { create: createTrip } = useCreateTrip();
+    const { create: createTrip } = useCreateTrip(); 
+    const { userId } = useContext(UserContext);
 
     const submitAction = async (formData) => {
         const tripData = Object.fromEntries(formData);
+
+        tripData.ownerId = userId;
 
         await createTrip(tripData);
 
