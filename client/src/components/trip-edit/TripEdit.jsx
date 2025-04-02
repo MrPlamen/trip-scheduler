@@ -33,8 +33,11 @@ export default function TripEdit() {
                     <label htmlFor="game-img">Image:</label>
                     <input type="text" id="imageUrl" name="imageUrl" defaultValue={trip.imageUrl} />
 
+                    <label htmlFor="trip-members">Trip-members:</label>
+                    <input type="email" name="members" id="members" placeholder="Add members..."/>
+
                     <label htmlFor="summary">Summary:</label>
-                    <textarea name="summary" id="summary" defaultValue={trip.summary}></textarea>
+                    <textarea type="text" name="summary" id="summary" ></textarea>
                     <input className="btn submit" type="submit" defaultValue="Edit trip" />
 
                 </div>

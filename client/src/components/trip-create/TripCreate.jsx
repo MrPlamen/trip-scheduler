@@ -6,12 +6,15 @@ import { useCreateTrip } from '../../api/tripApi';
 export default function TripCreate() {
     const navigate = useNavigate();
     const { create: createTrip } = useCreateTrip(); 
-    const { userId } = useContext(UserContext);
+    const { email } = useContext(UserContext);
 
     const submitAction = async (formData) => {
         const tripData = Object.fromEntries(formData);
 
-        tripData.ownerId = userId;
+        const membersEmails = tripData.members ? tripData.members.split(',').map(email => email.trim()) : [];
+
+        tripData.members = [email, ...membersEmails];
+        tripData.owner = email;
 
         await createTrip(tripData);
 
@@ -35,9 +38,12 @@ export default function TripCreate() {
 
                     <label htmlFor="trip-img">Image:</label>
                     <input type="text" id="imageUrl" name="imageUrl" placeholder="Upload a photo..." />
+                    
+                    <label htmlFor="trip-members">Trip-members:</label>
+                    <input type="email" name="members" id="members" placeholder="Add members..."/>
 
                     <label htmlFor="summary">Summary:</label>
-                    <textarea name="summary" id="summary"></textarea>
+                    <textarea type="text" name="summary" id="summary" ></textarea>
                     <input className="btn submit" type="submit" value="Create" />
                 </div>
             </form>
