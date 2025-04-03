@@ -5,10 +5,10 @@ import './VisitItems.css';
 import itemLikesService from '../../services/itemLikesService';
 import { useDeleteItem } from '../../api/visitItemApi';
 
-export default function VisitItems({ visitItems, email, userId }) {
+export default function VisitItems({ visitItems, email, userId, onEdit }) {
     const [likes, setLikes] = useState([]); // Holds the likes data
     const [isLiked, setIsLiked] = useState(false); // Tracks if an item is liked (global)
-    const [visitItemId, setVisitItemId] = useState([]); // Stores the visit item IDs
+    const [visitItemId, setVisitItemId] = useState([]); // Stores the visit item IDs 
     const [likedItems, setLikedItems] = useState({}); // Tracks if a specific item is liked
     const navigate = useNavigate();
     const { deleteItem } = useDeleteItem();
@@ -87,12 +87,12 @@ export default function VisitItems({ visitItems, email, userId }) {
 
     // Handle trip deletion
     const itemDeleteClickHandler = useCallback(async () => {
-        const hasConfirm = confirm(`Are you sure you want to delete ${visitItemId.title}?`);
+        const hasConfirm = confirm(`Are you sure you want to delete this place for visit?`);
         if (!hasConfirm) return;
 
         await deleteItem(visitItemId);
         navigate(0);
-    }, [visitItemId, deleteItem, navigate, visitItemId.title]);
+    }, [visitItemId, deleteItem, navigate]);
 
     return (
         <div id="visit-items">
@@ -126,7 +126,7 @@ export default function VisitItems({ visitItems, email, userId }) {
 
                                 {isOwner && (
                                     <div className="buttons">
-                                        {/* <Link to={`/trips/${tripId}/edit`} className="button">Edit</Link> */}
+                                        <button onClick={() => onEdit(item)} className="button">Edit</button>
                                         <button onClick={itemDeleteClickHandler} className="button">Delete</button>
                                     </div>
                                 )}

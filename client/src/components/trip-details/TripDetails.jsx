@@ -7,24 +7,28 @@ import useAuth from '../../hooks/useAuth';
 import { useEffect, useState, useCallback } from 'react';
 import likesService from '../../services/likesService';
 import VisitItems from '../visit-items/VisitItems';
+import { useEditItem } from "../../api/visitItemApi";
+
 import request from '../../utils/request';
 
 export default function TripDetails() {
     const navigate = useNavigate();
     const { email, _id: userId } = useAuth();
     const { tripId } = useParams();
-    const { trip } = useTrip(tripId); 
+    const { trip } = useTrip(tripId);
     const { deleteTrip } = useDeleteTrip();
+    const { edit } = useEditItem();
 
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [visitItems, setVisitItems] = useState([]); 
+    const [visitItems, setVisitItems] = useState([]);
     const [newVisitItem, setNewVisitItem] = useState({
         title: '',
         description: '',
         imageUrl: ''
     });
+    const [selectedVisitItem, setSelectedVisitItem] = useState(null);
 
     // Fetch comments and likes based on tripId
     useEffect(() => {
@@ -42,12 +46,12 @@ export default function TripDetails() {
         const fetchVisitItems = async () => {
             try {
                 const fetchedVisitItems = await request.get('http://localhost:3030/jsonstore/visitItems');
-                
+
                 if (fetchedVisitItems) {
                     const filteredVisitItems = Object.values(fetchedVisitItems).filter(item => item.tripId === tripId);
                     setVisitItems(filteredVisitItems);
                 } else {
-                    setVisitItems([]); 
+                    setVisitItems([]);
                 }
             } catch (error) {
                 console.error('Error fetching visit items:', error);
@@ -128,7 +132,36 @@ export default function TripDetails() {
         }
     };
 
-    // Handle input change for visit item form
+    const visitItemSubmitHandler = async (event) => {
+        event.preventDefault();
+
+        const visitItemData = {
+            ...newVisitItem,
+            tripId,
+            _ownerId: userId,
+            _createdOn: Date.now()
+        };
+
+        try {
+            if (selectedVisitItem) {
+                // Edit existing visit item
+                await edit(selectedVisitItem._id, visitItemData);
+                setVisitItems((prevState) =>
+                    prevState.map(item => item._id === selectedVisitItem._id ? visitItemData : item)
+                );
+            } else {
+                // Create new visit item
+                await request.post('http://localhost:3030/jsonstore/visitItems', visitItemData);
+                setVisitItems((prevState) => [...prevState, visitItemData]);
+            }
+
+            setNewVisitItem({ title: '', description: '', imageUrl: '' });  // Clear the form
+            setSelectedVisitItem(null); // Clear the selected item after submission
+        } catch (error) {
+            console.error('Error saving visit item:', error);
+        }
+    };
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setNewVisitItem((prevState) => ({
@@ -136,6 +169,16 @@ export default function TripDetails() {
             [name]: value
         }));
     };
+
+    const editVisitItemHandler = (visitItem) => {
+        setSelectedVisitItem(visitItem);  // This will now work as setSelectedVisitItem is defined
+        setNewVisitItem({
+            title: visitItem.title,
+            description: visitItem.description,
+            imageUrl: visitItem.imageUrl
+        });
+    };
+
 
     const isOwner = userId === trip?._ownerId;
     const isMember = Array.isArray(trip.members) && trip.members.includes(email);
@@ -181,18 +224,19 @@ export default function TripDetails() {
             </section>
 
             {/* Visit Items Section */}
-            <VisitItems 
-                visitItems={visitItems} 
-                email={email} 
+            <VisitItems
+                visitItems={visitItems}
+                email={email}
                 userId={userId}
-                onLike={likeHandler} 
+                onLike={likeHandler}
+                onEdit={editVisitItemHandler}
                 onAddComment={commentCreateHandler} />
 
             {/* Create Visit Item Form Section */}
             {isMember && (
                 <section id="create-visit-item">
-                    <h2>Create Visit Item</h2>
-                    <form onSubmit={visitItemCreateHandler}>
+                    <h2>{selectedVisitItem ? 'Edit Visit Item' : 'Create Visit Item'}</h2>
+                    <form onSubmit={visitItemSubmitHandler}>
                         <div>
                             <label htmlFor="title">Title:</label>
                             <input
@@ -225,7 +269,7 @@ export default function TripDetails() {
                                 required
                             />
                         </div>
-                        <button type="submit" className="button">Create Visit Item</button>
+                        <button type="submit" className="button">{selectedVisitItem ? 'Save Changes' : 'Create Visit Item'}</button>
                     </form>
                 </section>
             )}
