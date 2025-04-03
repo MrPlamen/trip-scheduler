@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import request from '../../utils/request';
 import './VisitItems.css';
 import itemLikesService from '../../services/itemLikesService';
+import { useDeleteItem } from '../../api/visitItemApi';
 
 export default function VisitItems({ visitItems, email, userId }) {
     const [likes, setLikes] = useState([]); // Holds the likes data
     const [isLiked, setIsLiked] = useState(false); // Tracks if an item is liked (global)
     const [visitItemId, setVisitItemId] = useState([]); // Stores the visit item IDs
     const [likedItems, setLikedItems] = useState({}); // Tracks if a specific item is liked
+    const navigate = useNavigate();
+    const { deleteItem } = useDeleteItem();
 
     useEffect(() => {
         const visitItemIds = Object.values(visitItems).map((item) => item._id);
@@ -62,24 +66,33 @@ export default function VisitItems({ visitItems, email, userId }) {
     const unlikeHandler = async (visitItemId) => {
         try {
             await itemLikesService.delete(email, visitItemId);
-            
+
             // Safeguard: Ensure prevLikes is an array before calling .filter
             setLikes((prevLikes) => {
                 // Make sure prevLikes is an array, or return an empty array if not
                 const likesArray = Array.isArray(prevLikes) ? prevLikes : [];
                 return likesArray.filter(like => like.email !== email && like.visitItemId !== visitItemId);
             });
-    
+
             setLikedItems((prevLikedItems) => ({
                 ...prevLikedItems,
                 [visitItemId]: false,  // Mark the specific item as not liked
             }));
-    
+
             setIsLiked(false);
         } catch (error) {
             console.error('Error unliking the item:', error);
         }
-    };    
+    };
+
+    // Handle trip deletion
+    const itemDeleteClickHandler = useCallback(async () => {
+        const hasConfirm = confirm(`Are you sure you want to delete ${visitItemId.title}?`);
+        if (!hasConfirm) return;
+
+        await deleteItem(visitItemId);
+        navigate(0);
+    }, [visitItemId, deleteItem, navigate, visitItemId.title]);
 
     return (
         <div id="visit-items">
@@ -91,7 +104,11 @@ export default function VisitItems({ visitItems, email, userId }) {
 
                     const userLikeForItem = Object.values(likes).find(like =>
                         like.email === email && like.visitItemId === item._id
-                      );
+                    );
+
+                    console.log(item?._ownerId);
+                    console.log(userId);
+                    const isOwner = userId === item?._ownerId;
 
                     return (
                         <div key={item._id} className="visit-item-card">
@@ -105,6 +122,13 @@ export default function VisitItems({ visitItems, email, userId }) {
                                     <button onClick={() => unlikeHandler(item._id)} className="button">Unlike</button>
                                 ) : (
                                     <button onClick={() => likeHandler(item._id)} className="button">Like</button>
+                                )}
+
+                                {isOwner && (
+                                    <div className="buttons">
+                                        {/* <Link to={`/trips/${tripId}/edit`} className="button">Edit</Link> */}
+                                        <button onClick={itemDeleteClickHandler} className="button">Delete</button>
+                                    </div>
                                 )}
                             </div>
                         </div>
