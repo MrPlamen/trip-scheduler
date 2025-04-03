@@ -138,7 +138,7 @@ export default function TripDetails() {
     };
 
     const isOwner = userId === trip?._ownerId;
-    const isMember = trip.members.includes(email);
+    const isMember = Array.isArray(trip.members) && trip.members.includes(email);
 
     return (
         <>
