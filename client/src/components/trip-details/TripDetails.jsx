@@ -138,6 +138,7 @@ export default function TripDetails() {
     };
 
     const isOwner = userId === trip?._ownerId;
+    const isMember = trip.members.includes(email);
 
     return (
         <>
@@ -188,7 +189,7 @@ export default function TripDetails() {
                 onAddComment={commentCreateHandler} />
 
             {/* Create Visit Item Form Section */}
-            {isOwner && (
+            {isMember && (
                 <section id="create-visit-item">
                     <h2>Create Visit Item</h2>
                     <form onSubmit={visitItemCreateHandler}>
