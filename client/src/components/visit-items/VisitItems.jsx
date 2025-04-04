@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useNavigate } from 'react-router';
 import request from '../../utils/request';
 import './VisitItems.css';
 import itemLikesService from '../../services/itemLikesService';
@@ -13,101 +13,91 @@ export default function VisitItems({ visitItems, email, userId, onEdit }) {
     const navigate = useNavigate();
     const { deleteItem } = useDeleteItem();
 
+    // Fetching likes and visit item ids
     useEffect(() => {
+        if (!visitItems) return;  // Guard clause to ensure visitItems is not null or undefined
+        
         const visitItemIds = Object.values(visitItems).map((item) => item._id);
         setVisitItemId(visitItemIds);
 
         const fetchLikes = async () => {
             try {
                 const fetchedLikes = await request.get('http://localhost:3030/jsonstore/itemLikes');
-                setLikes(fetchedLikes);  // Store likes data
+                setLikes(Object.values(fetchedLikes));  // Store likes data as an array
             } catch (error) {
                 console.error('Error fetching likes:', error);
             }
         };
 
         fetchLikes();
-    }, [likedItems, isLiked]);  // Empty array means this runs once on mount
+    }, [visitItems, likedItems, isLiked]);  // Re-run when these values change
 
-    const getLikeCount = (visitItemId) => {
-        // Filter likes to count how many likes this particular visit item has
-        return Object.values(likes).filter(like => like.visitItemId === visitItemId).length;
-    };
+    // Memoize getLikeCount to optimize performance
+    const getLikeCount = useMemo(() => {
+        return (visitItemId) => {
+            return likes.filter(like => like.visitItemId === visitItemId).length;
+        };
+    }, [likes]);
 
+    // Handle like action
     const likeHandler = async (visitItemId) => {
         try {
-            // Create the new like object
-            const newLike = { email, visitItemId: visitItemId, like: true, userId };
+            const newLike = { email, visitItemId, like: true, userId };
 
             // Call the service to create the like
             await itemLikesService.createItemLike(email, visitItemId, true, userId);
 
-            // Safely update the likes state
-            setLikes((prevLikes) => {
-                if (Array.isArray(prevLikes)) {
-                    return [...prevLikes, newLike];  // Add the new like to the list of likes
-                }
-                return [newLike];  // In case prevLikes isn't an array, initialize it with the newLike
-            });
+            // Update the likes state
+            setLikes((prevLikes) => [...prevLikes, newLike]);
 
-            // Update the liked status for this specific item
+            // Update liked status for this specific item
             setLikedItems((prevLikedItems) => ({
                 ...prevLikedItems,
-                [visitItemId]: true,  // Mark the specific item as liked
+                [visitItemId]: true, // Mark the specific item as liked
             }));
 
-            setIsLiked(true);
+            setIsLiked(true); // This could be removed if not necessary
         } catch (error) {
             console.error('Error liking the item:', error);
         }
     };
 
-    // Handle unlike
+    // Handle unlike action
     const unlikeHandler = async (visitItemId) => {
         try {
             await itemLikesService.delete(email, visitItemId);
 
-            // Safeguard: Ensure prevLikes is an array before calling .filter
-            setLikes((prevLikes) => {
-                // Make sure prevLikes is an array, or return an empty array if not
-                const likesArray = Array.isArray(prevLikes) ? prevLikes : [];
-                return likesArray.filter(like => like.email !== email && like.visitItemId !== visitItemId);
-            });
+            // Remove the like from the likes state
+            setLikes((prevLikes) => prevLikes.filter(like => like.email !== email || like.visitItemId !== visitItemId));
 
             setLikedItems((prevLikedItems) => ({
                 ...prevLikedItems,
-                [visitItemId]: false,  // Mark the specific item as not liked
+                [visitItemId]: false, // Mark the specific item as unliked
             }));
 
-            setIsLiked(false);
+            setIsLiked(false); // Reset the global liked status
         } catch (error) {
             console.error('Error unliking the item:', error);
         }
     };
 
-    // Handle trip deletion
-    const itemDeleteClickHandler = useCallback(async () => {
+    // Handle item deletion
+    const itemDeleteClickHandler = useCallback(async (visitItemId) => {
         const hasConfirm = confirm(`Are you sure you want to delete this place for visit?`);
         if (!hasConfirm) return;
 
         await deleteItem(visitItemId);
         navigate(0);
-    }, [visitItemId, deleteItem, navigate]);
+    }, [deleteItem, navigate]);
 
     return (
         <div id="visit-items">
             <h2>Visit Items</h2>
-            {Object.values(visitItems)?.length > 0 ? (
+            {visitItems && Object.values(visitItems).length > 0 ? (
                 Object.values(visitItems).map((item) => {
-                    // Ensure 'item' is valid before trying to access its properties
-                    if (!item) return null;
+                    if (!item) return null;  // Ensure item is valid before proceeding
 
-                    const userLikeForItem = Object.values(likes).find(like =>
-                        like.email === email && like.visitItemId === item._id
-                    );
-
-                    console.log(item?._ownerId);
-                    console.log(userId);
+                    const userLikeForItem = likes.find(like => like.email === email && like.visitItemId === item._id);
                     const isOwner = userId === item?._ownerId;
 
                     return (
@@ -127,7 +117,7 @@ export default function VisitItems({ visitItems, email, userId, onEdit }) {
                                 {isOwner && (
                                     <div className="buttons">
                                         <button onClick={() => onEdit(item)} className="button">Edit</button>
-                                        <button onClick={itemDeleteClickHandler} className="button">Delete</button>
+                                        <button onClick={() => itemDeleteClickHandler(item._id)} className="button">Delete</button>
                                     </div>
                                 )}
                             </div>
