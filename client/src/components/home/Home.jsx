@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { useLatestTrips } from "../../api/tripApi";
+import './Home.css';
 
 export default function Home() {
     const { latestTrips } = useLatestTrips();
@@ -15,16 +16,19 @@ export default function Home() {
 
                 {latestTrips.map(trip => (
                     <div className="trip" key={trip._id}>
-                        <div className="image-wrap">
+                        <div className="trip-text">
+                            <h3>{trip.title}</h3>
+                            <div className="rating">
+                                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+                            </div>
+                            <div className="data-buttons">
+                                <Link to={`/trips/${trip._id}/details`} className="btn details-btn">Details</Link>
+                            </div>
+                        </div>
+                        <div className="image-latest">
                             <img src={trip.imageUrl} />
                         </div>
-                        <h3>{trip.title}</h3>
-                        <div className="rating">
-                            <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
-                        </div>
-                        <div className="data-buttons">
-                            <Link to={`/trips/${trip._id}/details`} className="btn details-btn">Details</Link>
-                        </div>
+                        <div className="trip-footer" />
                     </div>
                 ))}
 

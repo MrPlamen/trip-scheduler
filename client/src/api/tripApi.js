@@ -30,19 +30,29 @@ export const useTrip = (tripId) => {
 
 export const useLatestTrips = () => {
     const [latestTrips, setLatestTrips] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const searchParams = new URLSearchParams({
-            sortBy: '_createdOn desc',
-            pageSize: 3,
-            select: '_id,imageUrl,title',
-        });
+        const fetchLatestTrips = async () => {
+            try {
+                const searchParams = new URLSearchParams({
+                    sortBy: '_createdOn desc',
+                    pageSize: 3,
+                    select: '_id,imageUrl,title',
+                });
 
-        request.get(`${baseUrl}?${searchParams.toString()}`)
-            .then(setLatestTrips)
+                const response = await request.get(`${baseUrl}?${searchParams.toString()}`);
+                setLatestTrips(response);
+            } catch (error) {
+                setError("Failed to fetch latest trips.");
+                console.error("Error fetching latest trips:", error);
+            }
+        };
+
+        fetchLatestTrips();
     }, []);
 
-    return { latestTrips };
+    return { latestTrips, error };
 };
 
 export const useCreateTrip = () => {
