@@ -12,6 +12,7 @@ import TripEdit from './components/trip-edit/TripEdit'
 import './App.css'
 import Logout from './components/logout/Logout'
 import VisitItemCatalog from './components/item-catalog/VisitItemCatalog'
+import VisitItemDetails from './components/item-details/VisitItemDetails'
 
 function App() {
   const [authData, setAuthData] = useState({});
@@ -34,6 +35,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/trips/create' element={<TripCreate />} />
             <Route path='/trips/:tripId/details' element={<TripDetails />} />
+            <Route path='/visits/:visitItemId/details' element={<VisitItemDetails />} />
             <Route path='/trips/:tripId/edit' element={<TripEdit />} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />

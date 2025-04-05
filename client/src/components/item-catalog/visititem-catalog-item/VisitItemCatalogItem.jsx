@@ -14,7 +14,7 @@ export default function VisitItemCatalogItem({
                 <h2>{title}</h2>
                 <h6>{category}</h6>
                 <p>{description}</p>
-                <Link to={`/trips/${_id}/details`} className="details-button">Details</Link>
+                <Link to={`/visits/${_id}/details`} className="details-button">Details</Link>
             </div>
         </div>
     );
