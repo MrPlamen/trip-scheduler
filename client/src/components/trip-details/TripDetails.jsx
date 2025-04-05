@@ -100,44 +100,15 @@ export default function TripDetails() {
         setComments((prevState) => [...prevState, newComment]);
     }, []);
 
-    // Handle visit item creation
-    const visitItemCreateHandler = async (event) => {
-        event.preventDefault();
-
-        // Construct the new visit item data
-        const newItem = {
-            ...newVisitItem,
-            tripId,
-            _ownerId: userId,  // Assuming the current user is the owner
-            _createdOn: Date.now()
-        };
-
-        try {
-            // POST request to create a new visit item
-            await request.post('http://localhost:3030/jsonstore/visitItems', newItem);
-
-            // Update state to include the new visit item
-            setVisitItems((prevState) => [...prevState, newItem]);
-
-            // Clear the form fields after submission
-            setNewVisitItem({
-                title: '',
-                description: '',
-                imageUrl: ''
-            });
-
-            console.log('Visit item created successfully');
-        } catch (error) {
-            console.error('Error creating visit item:', error);
-        }
-    };
-
     const visitItemSubmitHandler = async (event) => {
         event.preventDefault();
+
+        const members = trip.members;
 
         const visitItemData = {
             ...newVisitItem,
             tripId,
+            members,
             _ownerId: userId,
             _createdOn: Date.now()
         };

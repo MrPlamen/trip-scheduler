@@ -12,10 +12,12 @@ export default function Header() {
             </div>
 
             <nav className="hero-nav">
-                <Link className="nav-link" to="/trips">All Trips</Link>
+
+                    <Link className="nav-link" to="/trips">All Trips</Link>
 
                 {email ? (
                     <>
+                        <Link className="nav-link" to="/visits">All visit points</Link>
                         <Link className="nav-link" to="/trips/create">Create Trip</Link>
                         <Link className="nav-link" to="/logout">
                             Logout <span className="logged-email">({email})</span>
