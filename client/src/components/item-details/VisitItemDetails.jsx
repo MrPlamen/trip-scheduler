@@ -11,7 +11,7 @@ export default function VisitItemDetails() {
     const { visitItem } = useVisitItem(visitItemId);
     const [likes, setLikes] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const { email } = useContext(UserContext);
+    const { email, userId } = useContext(UserContext);
 
     if (!visitItem) {
         return <div>Visit item not found!</div>;
@@ -58,6 +58,27 @@ export default function VisitItemDetails() {
         // fetchVisitItems();
     }, [visitItemId, email]);
 
+    const likeHandler = async () => {
+        try {
+            const newLike = { email, visitItemId, like: true, userId };
+            await itemLikesService.createItemLike(email, visitItemId, true, userId);
+            setLikes((prevLikes) => [...prevLikes, newLike]);
+            setIsLiked(true);
+        } catch (error) {
+            console.error('Error liking the trip:', error);
+        }
+    };
+
+    const unlikeHandler = async () => {
+        try {
+            await itemLikesService.delete(email, visitItemId);
+            setLikes((prevLikes) => prevLikes.filter(like => like.email !== email));
+            setIsLiked(false);
+        } catch (error) {
+            console.error('Error unliking the trip:', error);
+        }
+    };
+
     return (
         <section id="trip-details">
             <h1>{tripTitle} trip:</h1>
@@ -72,11 +93,11 @@ export default function VisitItemDetails() {
 
                 <div className="likes-section">
                     <p>{likes.length} likes</p>
-                    {/* {isLiked ? (
+                    {isLiked ? (
                         <button onClick={unlikeHandler} className="button">Unlike</button>
                     ) : (
                         <button onClick={likeHandler} className="button">Like</button>
-                    )} */}
+                    )}
                 </div>
 
                 <p className="text">{visitItem.description}</p>
