@@ -40,12 +40,21 @@ export const useVisitItems = () => {
 export const useVisitItem = (visitItemId) => {
     const [visitItem, setVisitItem] = useState({});
 
+    const fetchVisitItem = async () => {
+        try {
+            const fetchedVisitItem = await request.get(`${baseUrl}/${visitItemId}`);
+            setVisitItem(fetchedVisitItem);
+        } catch (error) {
+            console.error('Error fetching visit item:', error);
+        }
+    };
+
     useEffect(() => {
-        request.get(`${baseUrl}/${visitItemId}`)
-            .then(setVisitItem);
-    }, [visitItemId])
+        fetchVisitItem();
+    }, [visitItemId]);
 
     return {
         visitItem,
+        refetchVisitItem: fetchVisitItem // Add refetch function
     };
 };
