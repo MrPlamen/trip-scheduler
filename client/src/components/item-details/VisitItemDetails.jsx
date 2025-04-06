@@ -19,11 +19,11 @@ export default function VisitItemDetails() {
     const { edit } = useEditItem();
     const navigate = useNavigate();
     const [newVisitItem, setNewVisitItem] = useState({
-        title: '',
-        description: '',
-        imageUrl: ''
+        title: visitItem.title,
+        description: visitItem.description,
+        imageUrl: visitItem.imageUrl
     });
-    const [selectedVisitItem, setSelectedVisitItem] = useState(null);
+    const [editItem, setEditItem] = useState(null);
 
     // If visitItem is not yet fetched
     if (!visitItem) {
@@ -89,9 +89,9 @@ export default function VisitItemDetails() {
 
     const visitItemSubmitHandler = async (event) => {
         event.preventDefault();
-    
+
         const members = visitItem.members;  // Preserve the current members
-    
+
         const visitItemData = {
             ...visitItem,  // Spread the original visitItem data to preserve all properties
             ...newVisitItem,  // Spread the updated properties (title, description, imageUrl)
@@ -99,22 +99,21 @@ export default function VisitItemDetails() {
             _ownerId: userId,
             _createdOn: visitItem._createdOn,  // Keep the original creation timestamp
         };
-    
+
         try {
-            if (selectedVisitItem) {
+            if (editItem) {
                 // Edit existing visit item
-                await edit(selectedVisitItem._id, visitItemData);
+                await edit(editItem._id, visitItemData);
                 // Manually trigger refetch
                 refetchVisitItem(); // This will re-fetch the updated visit item
             }
-    
-            setNewVisitItem({ title: '', description: '', imageUrl: '' });  // Clear the form
-            setSelectedVisitItem(null); // Clear the selected item after submission
+
+            setEditItem(null); // Clear the selected item after submission
         } catch (error) {
             console.error('Error saving visit item:', error);
         }
-    };       
-    
+    };
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setNewVisitItem((prevState) => ({
@@ -124,7 +123,7 @@ export default function VisitItemDetails() {
     };
 
     const editVisitItemHandler = (visitItem) => {
-        setSelectedVisitItem(visitItem);  
+        setEditItem(visitItem);
         setNewVisitItem({
             title: visitItem.title,
             description: visitItem.description,
@@ -142,12 +141,49 @@ export default function VisitItemDetails() {
             <div className="info-section">
                 <div className="trip-header">
                     <img className="trip-img" src={visitItem.imageUrl} alt={visitItem.title} />
-                    <h1>{visitItem.title}</h1>
+
+                    {/* Editable Title */}
+                    {editItem ? (
+                        <input
+                            type="text"
+                            name="title"
+                            value={newVisitItem.title}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    ) : (
+                        <h1>{visitItem.title}</h1>
+                    )}
+
                     <span className="levels">Created on: {date.toLocaleDateString()}</span>
-                    <p className="type">{visitItem.category}</p>
-                    <p className="text">{visitItem.description}</p>
+
+                    {/* Editable Category */}
+                    {editItem ? (
+                        <input
+                            type="text"
+                            name="category"
+                            value={newVisitItem.category}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    ) : (
+                        <p className="type">{visitItem.category}</p>
+                    )}
+
+                    {/* Editable Description */}
+                    {editItem ? (
+                        <textarea
+                            name="description"
+                            value={newVisitItem.description}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    ) : (
+                        <p className="text">{visitItem.description}</p>
+                    )}
                 </div>
 
+                {isOwner && !editItem && (
                 <div className="likes-section">
                     <p>{likes.length} likes</p>
                     {isLiked ? (
@@ -156,62 +192,31 @@ export default function VisitItemDetails() {
                         <button onClick={likeHandler} className="button">Like</button>
                     )}
                 </div>
+                )}
 
-                <CommentsShow comments={comments} />
+                {isMember && !editItem && (
+                    <CommentsShow comments={comments} />
+                )}
 
-                {isOwner && (
+                {isOwner && !editItem && (
                     <div className="buttons">
                         <button onClick={() => editVisitItemHandler(visitItem)} className="button">Edit</button>
                         <button onClick={itemDeleteClickHandler} className="button">Delete</button>
                     </div>
                 )}
 
-                <CommentsCreate
-                    email={email}
-                    tripId={visitItemId}
-                    onCreate={commentCreateHandler}
-                />
+                {isMember && !editItem && (
+                    <CommentsCreate
+                        email={email}
+                        tripId={visitItemId}
+                        onCreate={commentCreateHandler}
+                />)}
             </div>
 
-            {isMember && (
-                <section id="create-visit-item">
-                    <h2>{selectedVisitItem ? 'Edit Visit Item' : 'Create Visit Item'}</h2>
-                    <form onSubmit={visitItemSubmitHandler}>
-                        <div>
-                            <label htmlFor="title">Title:</label>
-                            <input
-                                type="text"
-                                id="title"
-                                name="title"
-                                value={newVisitItem.title}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="description">Description:</label>
-                            <textarea
-                                id="description"
-                                name="description"
-                                value={newVisitItem.description}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="imageUrl">Image URL:</label>
-                            <input
-                                type="url"
-                                id="imageUrl"
-                                name="imageUrl"
-                                value={newVisitItem.imageUrl}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </div>
-                        <button type="submit" className="button">{selectedVisitItem ? 'Save Changes' : 'Create Visit Item'}</button>
-                    </form>
-                </section>
+            {(isOwner && editItem) && (
+                <div className="buttons">
+                    <button onClick={visitItemSubmitHandler} className="button">Save Changes</button>
+                </div>
             )}
         </section>
     );
