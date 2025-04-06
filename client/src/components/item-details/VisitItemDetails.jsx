@@ -4,11 +4,15 @@ import { useTrip } from "../../api/tripApi";
 import itemLikesService from "../../services/itemLikesService";
 import { useCallback, useEffect, useState } from "react";
 import useAuth from '../../hooks/useAuth';
+import commentService from '../../services/commentService';
+import CommentsShow from '../comment-show/CommentsShow';
+import CommentsCreate from '../comments-create/CommentsCreate';
 
 export default function VisitItemDetails() {
     const { visitItemId } = useParams();
     const { visitItem } = useVisitItem(visitItemId);
     const [likes, setLikes] = useState([]);
+    const [comments, setComments] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
     const { email, _id: userId } = useAuth();
     const { deleteItem } = useDeleteItem();
@@ -27,10 +31,10 @@ export default function VisitItemDetails() {
 
     // Fetch comments and likes based on tripId
     useEffect(() => {
-        // const fetchComments = async () => {
-        //     const fetchedComments = await commentService.getAll(tripId);
-        //     setComments(fetchedComments);
-        // };
+        const fetchComments = async () => {
+            const fetchedComments = await commentService.getAll(visitItemId);
+            setComments(fetchedComments);
+        };
 
         const fetchLikes = async () => {
             const fetchedLikes = await itemLikesService.getAll(visitItemId);
@@ -38,25 +42,13 @@ export default function VisitItemDetails() {
             setIsLiked(fetchedLikes.some(like => like.email === email));
         };
 
-        // const fetchVisitItems = async () => {
-        //     try {
-        //         const fetchedVisitItems = await request.get('http://localhost:3030/jsonstore/visitItems');
-
-        //         if (fetchedVisitItems) {
-        //             const filteredVisitItems = Object.values(fetchedVisitItems).filter(item => item.tripId === tripId);
-        //             setVisitItems(filteredVisitItems);
-        //         } else {
-        //             setVisitItems([]);
-        //         }
-        //     } catch (error) {
-        //         console.error('Error fetching visit items:', error);
-        //     }
-        // };
-
-        // fetchComments();
+        fetchComments();
         fetchLikes();
-        // fetchVisitItems();
     }, [visitItemId, email]);
+
+    const commentCreateHandler = useCallback((newComment) => {
+        setComments((prevState) => [...prevState, newComment]);
+    }, []);
 
     const likeHandler = async () => {
         try {
@@ -111,7 +103,7 @@ export default function VisitItemDetails() {
                     )}
                 </div>
 
-                {/* <CommentsShow comments={comments} /> */}
+                <CommentsShow comments={comments} />
 
                 {isOwner && (
                     <div className="buttons">
@@ -119,6 +111,12 @@ export default function VisitItemDetails() {
                         <button onClick={itemDeleteClickHandler} className="button">Delete</button>
                     </div>
                 )}
+
+                <CommentsCreate
+                    email={email}
+                    tripId={visitItemId}
+                    onCreate={commentCreateHandler}
+                />
 
                 <p className="text">{visitItem.description}</p>
             </div>
