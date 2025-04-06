@@ -1,17 +1,18 @@
-import { useParams } from "react-router";
-import { useVisitItem } from "../../api/visitItemApi";
+import { Link, useNavigate, useParams } from 'react-router';
+import { useDeleteItem, useVisitItem } from "../../api/visitItemApi";
 import { useTrip } from "../../api/tripApi";
 import itemLikesService from "../../services/itemLikesService";
-import { useEffect, useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../../contexts/UserContext";
+import { useCallback, useEffect, useState } from "react";
+import useAuth from '../../hooks/useAuth';
 
 export default function VisitItemDetails() {
     const { visitItemId } = useParams();
     const { visitItem } = useVisitItem(visitItemId);
     const [likes, setLikes] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const { email, userId } = useContext(UserContext);
+    const { email, _id: userId } = useAuth();
+    const { deleteItem } = useDeleteItem();
+    const navigate = useNavigate();
 
     if (!visitItem) {
         return <div>Visit item not found!</div>;
@@ -21,7 +22,6 @@ export default function VisitItemDetails() {
     const date = new Date(timestamp);
     const trip = visitItem.tripId;
 
-    console.log(`trip id: ${trip}`);
     const { trip: tripDetails } = useTrip(trip);
     const tripTitle = tripDetails.title;
 
@@ -79,6 +79,17 @@ export default function VisitItemDetails() {
         }
     };
 
+    const itemDeleteClickHandler = useCallback(async () => {
+        const hasConfirm = confirm(`Are you sure you want to delete ${visitItem.title}?`);
+        if (!hasConfirm) return;
+
+        await deleteItem(visitItemId);
+        navigate('/visits');
+    }, [visitItemId, deleteItem, navigate, visitItem.title]);
+
+    const isOwner = userId === visitItem?._ownerId;
+    const isMember = Array.isArray(visitItem.members) && visitItem.members.includes(email);
+
     return (
         <section id="trip-details">
             <h1>{tripTitle} trip:</h1>
@@ -99,6 +110,15 @@ export default function VisitItemDetails() {
                         <button onClick={likeHandler} className="button">Like</button>
                     )}
                 </div>
+
+                {/* <CommentsShow comments={comments} /> */}
+
+                {isOwner && (
+                    <div className="buttons">
+                        {/* <Link to={`/trips/${tripId}/edit`} className="button">Edit</Link> */}
+                        <button onClick={itemDeleteClickHandler} className="button">Delete</button>
+                    </div>
+                )}
 
                 <p className="text">{visitItem.description}</p>
             </div>
