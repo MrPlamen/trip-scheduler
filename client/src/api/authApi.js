@@ -11,7 +11,7 @@ export const useLogin = () => {
             `${baseUrl}/login`,
             { email, password },
         );
-        
+
     return {
         login,
     }
@@ -49,3 +49,24 @@ export const useLogout = () => {
         isLoggedOut: !!accessToken,
     };
 };
+
+
+// export const useEmailExists = async (email) => {
+//     try {
+//         const users = await request.get(`${baseUrl}`);
+
+//         if (!Array.isArray(users) || users.length === 0) {
+//             return false; 
+//         }
+
+//         const emailExists = users.some(user => user.email === email);
+
+//         return !!emailExists[2];
+//     } catch (error) {
+//         console.error("Error checking email existence:", error);
+//         return false; 
+//     }
+// };
+
+
+
