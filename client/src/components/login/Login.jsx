@@ -1,4 +1,4 @@
-import { useActionState, useContext } from "react";
+import { useActionState, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useLogin } from "../../api/authApi";
 import { UserContext } from "../../contexts/UserContext";
@@ -8,6 +8,8 @@ export default function Login() {
     const { userLoginHandler } = useContext(UserContext);
     const { login } = useLogin();
 
+    const [errorMessage, setErrorMessage] = useState("");
+
     const loginHandler = async (_, formData) => {
         const formValues = Object.fromEntries(formData);
 
@@ -15,9 +17,15 @@ export default function Login() {
 
         userLoginHandler(authData);
 
-        navigate('/trips');
+        if (!authData.message) {
+            setErrorMessage("");
 
-        return formValues;
+            navigate('/trips');
+
+            return formValues;
+        } else {
+            setErrorMessage(authData.message);
+        }
     };
 
     const [_, loginAction, isPending] = useActionState(loginHandler, { email: '', password: '' });
@@ -27,16 +35,19 @@ export default function Login() {
             <form id="login" action={loginAction}>
 
                 <div className="container">
-                    <div className="brand-logo"></div>
+                    <i className="fas fa-user"></i>
                     <h1>Login</h1>
-                    <label htmlFor="email">Email:</label>
+                    <label className="auth-label" htmlFor="email">Email:</label>
                     <input type="email" id="email" name="email" placeholder="example@mail.com" />
 
-                    <label htmlFor="login-pass">Password:</label>
+                    <label className="auth-label" htmlFor="login-pass">Password:</label>
                     <input type="password" id="login-password" name="password" />
                     <input type="submit" className="btn submit" value="Login" disabled={isPending} />
+                    {errorMessage && errorMessage === "Login or password don't match" && (
+                        <p className="auth-error"><b>Incorrect email or password!</b></p>
+                        )}
                     <p className="field">
-                        <span>If you don't have profile click <Link to="/register">here</Link></span>
+                        <span><Link to="/register">Or register here</Link></span>
                     </p>
                 </div>
             </form>

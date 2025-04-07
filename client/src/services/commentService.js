@@ -1,6 +1,6 @@
 import request from "../utils/request";
 
-const baseUrl = 'http://localhost:3030/jsonstore/comments';
+const baseUrl = 'http://localhost:3030/data/comments';
 
 export default {
     async getAll(tripId) {

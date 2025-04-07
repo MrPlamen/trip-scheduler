@@ -24,15 +24,9 @@
 
 .container {
     padding: 40px;
-}
-
-.brand-logo {
-    height: 100px;
-    width: 100px;
-    background: url("../images/icon-gamepad-2.png");
-    margin: auto;
-    box-sizing: border-box;
-    box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .container>h1 {
@@ -128,6 +122,24 @@ label[for="terms"]>input {
     background: rgb(235, 157, 142);
     border-radius: 10px;
     padding: 5px;
+}
+
+.fas.fa-user {
+    font-size: 86px; 
+    color: #2a6fb5;
+    margin-bottom: 12px;
+}
+
+.auth-error {
+    margin-top: 14px;
+    border: 2px solid orangered;
+    padding: 4px 6px;
+}
+
+.auth-label {
+    color: black;
+    margin-bottom: 0px;
+    font-size: 20px;
 }
 
 /* #main-content {
