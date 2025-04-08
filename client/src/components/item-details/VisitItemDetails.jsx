@@ -149,6 +149,7 @@ export default function VisitItemDetails() {
                             name="title"
                             value={newVisitItem.title}
                             onChange={handleInputChange}
+                            placeholder="Title"
                             required
                         />
                     ) : (
@@ -162,6 +163,7 @@ export default function VisitItemDetails() {
                         <input
                             type="text"
                             name="category"
+                            placeholder="Category"
                             value={newVisitItem.category}
                             onChange={handleInputChange}
                             required
@@ -174,6 +176,7 @@ export default function VisitItemDetails() {
                     {editItem ? (
                         <textarea
                             name="description"
+                            placeholder="Description"
                             value={newVisitItem.description}
                             onChange={handleInputChange}
                             required

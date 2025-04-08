@@ -1,8 +1,8 @@
 #create-page,
 #edit-page {
     position: absolute;
-    margin-top: 90px;
-    width: 1800px;
+    margin: 90px 0px;
+    width: 800px;
     height: auto;
     border-radius: 20px;
     padding: 40px;

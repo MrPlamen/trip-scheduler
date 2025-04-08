@@ -86,3 +86,15 @@ body {
 .logo-container img {
   margin-top: 6px;
 }
+
+textarea {
+  padding: 8px;
+}
+
+label {
+  color: black;
+}
+
+#trip-details h2 {
+  margin-bottom: 8px;
+}
