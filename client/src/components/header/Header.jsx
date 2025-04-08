@@ -13,6 +13,7 @@ export default function Header() {
 
             <nav className="hero-nav">
 
+                <Link className="nav-link" to="/">Home</Link>
                 <Link className="nav-link" to="/trips">My Trips</Link>
 
                 {username || email ? (

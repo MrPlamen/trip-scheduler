@@ -67,3 +67,12 @@ body {
   font-weight: 700;
   font-size: 15px;
 }
+
+.nav-link {
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 90px rgba(143, 142, 142, 0.7); 
+}

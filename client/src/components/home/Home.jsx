@@ -8,7 +8,7 @@ export default function Home() {
     return (
         <section id="welcome-world">
             <div className="welcome-message">
-                <h2>Welcome</h2>
+                <h2>Welcome to Trip Planner!</h2>
             </div>
 
             <div id="home-page">
@@ -18,9 +18,7 @@ export default function Home() {
                     <div className="trip" key={trip._id}>
                         <div className="trip-text">
                             <h3>{trip.title}</h3>
-                            <div className="rating">
-                                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
-                            </div>
+                            <br />
                             <div className="data-buttons">
                                 <Link to={`/trips/${trip._id}/details`} className="btn details-btn">Details</Link>
                             </div>
