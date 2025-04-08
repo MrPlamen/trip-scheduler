@@ -3,7 +3,7 @@ import { useSearchTrip } from "../../hooks/useSearchTrip";
 import { useSearchVisitItem } from "../../hooks/useSearchVisitItem";
 
 const Search = () => {
-    const [memberEmail, setMemberEmail] = useState("");  // Replace with actual member ID to search for
+    const [memberEmail, setMemberEmail] = useState("");  
     const { filteredTrips, error } = useSearchTrip(memberEmail);
     const { filteredItems, errorItem } = useSearchVisitItem(memberEmail);
 
@@ -19,6 +19,7 @@ const Search = () => {
             />
 
             {error && <p>{error}</p>}
+            {errorItem && <p>{errorItem}</p>}
 
             <div className="search-results search-trips">
                 <ul>

@@ -55,8 +55,15 @@ body {
   overflow-x: hidden;
 }
 
-.logged-email {
-  color: rgb(73, 73, 73);
-  font-weight: 200;
+.logged-username {
+  color: rgb(35, 142, 188);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.logged-admin {
+  color: rgb(188, 35, 127);
+  text-decoration: underline;
+  font-weight: 700;
   font-size: 15px;
 }

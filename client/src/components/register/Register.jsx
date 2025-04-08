@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useRegister } from "../../api/authApi";
 import { UserContext } from "../../contexts/UserContext";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -11,25 +11,29 @@ export default function Register() {
     const [errorMessage, setErrorMessage] = useState("");
 
     const registerHandler = async (formData) => {
-        const {email, password} = Object.fromEntries(formData);
+        const { email, username, password } = Object.fromEntries(formData);
 
         const confirmPassword = formData.get('confirm-password');
 
-        // if (useEmailExists(email)) {
-        //     setErrorMessage("Email already exists!"); 
-        //     return;
-        // }
-
         if (password !== confirmPassword) {
-            setErrorMessage("Password missmatch!"); 
+            setErrorMessage("Password missmatch!");
             return;
         }
 
-        const authData = await register(email, password);
+        try {
+            const authData = await register(email, username, password);
 
-        userLoginHandler(authData);
+            if (authData.message === "A user with the same email already exists") {
+                setErrorMessage("Email already exists!");
+                return;
+            }
 
-        navigate('/');
+            userLoginHandler(authData);
+            navigate('/');
+        } catch (error) {
+            setErrorMessage("Registration failed! Please try again.");
+            console.error("Error during registration: ", error);
+        }
     }
 
     return (
@@ -40,21 +44,25 @@ export default function Register() {
                     <h1>Register</h1>
 
                     <label className="auth-label" htmlFor="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="maria@email.com" />
+                    <input type="email" id="email" name="email" placeholder="johndoe@email.com" required />
+
+                    <label className="auth-label" htmlFor="username">Username:</label>
+                    <input type="text" id="username" name="username" required />
 
                     <label className="auth-label" htmlFor="pass">Password:</label>
-                    <input type="password" name="password" id="register-password" />
+                    <input type="password" name="password" id="register-password" required />
 
                     <label className="auth-label" htmlFor="con-pass">Confirm Password:</label>
-                    <input type="password" name="confirm-password" id="confirm-password" />
-                    {errorMessage && errorMessage === "Password missmatch!" && (
-                        <p className="auth-error"><b>Password missmatch!</b></p>
+                    <input type="password" name="confirm-password" id="confirm-password" required />
+
+                    {errorMessage && (
+                        <p className="auth-error"><b>{errorMessage}</b></p>
                     )}
 
                     <input className="btn submit" type="submit" value="Register" />
 
                     <p className="field">
-                        <span>If you already have profile click <a href="#">here</a></span>
+                        <span><Link to="/login">If you already have profile click here</Link></span>
                     </p>
                 </div>
             </form>
