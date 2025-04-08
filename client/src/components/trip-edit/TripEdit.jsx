@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
 import { useEditTrip, useTrip } from "../../api/tripApi";
+import { calculateDuration } from '../../utils/dateUtil';
 
 export default function TripEdit() {
     const navigate = useNavigate();
@@ -11,10 +12,12 @@ export default function TripEdit() {
     const [formData, setFormData] = useState({
         title: '',
         category: '',
-        duration: '',
+        startDate: '',
+        endDate: '',
         imageUrl: '',
         members: '',
-        summary: ''
+        summary: '',
+        duration: ''
     });
 
     // Populate form data with existing trip info when the trip is loaded
@@ -23,10 +26,12 @@ export default function TripEdit() {
             setFormData({
                 title: trip.title || '',
                 category: trip.category || '',
-                duration: trip.duration || '',
+                startDate: trip.startDate || '',
+                endDate: trip.endDate || '',
                 imageUrl: trip.imageUrl || '',
                 members: trip.members?.join(', ') || '',  // Assuming members is an array
-                summary: trip.summary || ''
+                summary: trip.summary || '',
+                duration: calculateDuration(trip.startDate, trip.endDate) || ''
             });
         }
     }, [trip]);
@@ -34,10 +39,23 @@ export default function TripEdit() {
     // Handle form data input changes
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value
-        }));
+
+        // Calculate duration when either start or end date changes
+        if (name === 'startDate' || name === 'endDate') {
+            const newStartDate = name === 'startDate' ? value : formData.startDate;
+            const newEndDate = name === 'endDate' ? value : formData.endDate;
+            const newDuration = calculateDuration(newStartDate, newEndDate);
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+                duration: newDuration
+            }));
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value
+            }));
+        }
     };
 
     // Form submission action
@@ -72,7 +90,7 @@ export default function TripEdit() {
             <form id="edit" onSubmit={formAction}>
                 <div className="container">
                     <h1>Edit trip</h1>
-                    
+
                     <label htmlFor="title">Trip title:</label>
                     <input
                         type="text"
@@ -93,13 +111,22 @@ export default function TripEdit() {
                         required
                     />
 
-                    <label htmlFor="duration">Duration in days:</label>
+                    <label htmlFor="startDate">Start Date:</label>
                     <input
-                        type="number"
-                        id="duration"
-                        name="duration"
-                        min="1"
-                        value={formData.duration}
+                        type="date"
+                        className="calendar-picker"
+                        id="startDate"
+                        name="startDate"
+                        onChange={handleInputChange}
+                        required
+                    />
+
+                    <label htmlFor="endDate">End Date:</label>
+                    <input
+                        type="date"
+                        className="calendar-picker"
+                        id="endDate"
+                        name="endDate"
                         onChange={handleInputChange}
                         required
                     />

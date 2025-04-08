@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router';
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useCreateTrip } from '../../api/tripApi';
+import { calculateDuration } from '../../utils/dateUtil';
 
 export default function TripCreate() {
     const navigate = useNavigate();
@@ -21,6 +22,8 @@ export default function TripCreate() {
         tripData.members = [email, ...membersEmails];
 
         tripData.owner = email;
+        const duration = calculateDuration(tripData.startDate, tripData.endDate);
+        tripData.duration = duration;
 
         await createTrip(tripData);
 
@@ -43,8 +46,11 @@ export default function TripCreate() {
                     <label htmlFor="category">Category:</label>
                     <input type="text" id="category" name="category" placeholder="Enter trip category..." required />
 
-                    <label htmlFor="duration">Duration in days:</label>
-                    <input type="number" id="days" name="duration" min="1" placeholder="1" required />
+                    <label htmlFor="startDate">Start Date:</label>
+                    <input type="date" className="calendar-picker" id="startDate" name="startDate" required />
+
+                    <label htmlFor="endDate">End Date:</label>
+                    <input type="date" className="calendar-picker" id="endDate" name="endDate" required />
 
                     <label htmlFor="imageUrl">Image:</label>
                     <input type="text" id="imageUrl" name="imageUrl" placeholder="Upload a photo..." required />

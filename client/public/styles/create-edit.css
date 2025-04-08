@@ -46,3 +46,15 @@ textarea {
     padding: 22px;
 }
 
+.calendar-picker {
+    width: 260px;
+    align-self: flex-start;
+    margin-top: 4px;
+    border-radius: 0.7em;
+    font-size: 26px;
+    border-bottom-color: #ecf0f3;
+    background-color: #ecf0f3;
+    border-right-color: #ecf0f3;
+    box-shadow: inset 6px 6px 6px #c0c2c5, inset -6px -6px 6px white;
+    padding: 6px 26px;
+}
