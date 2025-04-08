@@ -8,7 +8,11 @@ export default function Header() {
     return (
         <header className="header-container">
             <div className="logo-container">
-                <h1><Link className="hero-home" to="/">Trip Planner</Link></h1>
+                    <h1>
+                        <Link className="hero-home" to="/">
+                            <img src="/logo3.png" alt="Trip Planner" className="logo" />
+                        </Link>
+                    </h1>
             </div>
 
             <nav className="hero-nav">
