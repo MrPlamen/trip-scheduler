@@ -73,7 +73,7 @@ export default function TripEdit() {
                 <div className="container">
                     <h1>Edit trip</h1>
                     
-                    <label htmlFor="title">Legendary title:</label>
+                    <label htmlFor="title">Trip title:</label>
                     <input
                         type="text"
                         id="title"
@@ -93,7 +93,7 @@ export default function TripEdit() {
                         required
                     />
 
-                    <label htmlFor="duration">MaxLevel:</label>
+                    <label htmlFor="duration">Duration in days:</label>
                     <input
                         type="number"
                         id="duration"
@@ -116,6 +116,7 @@ export default function TripEdit() {
 
                     <label htmlFor="members">Trip members:</label>
                     <input
+                        type="text"
                         name="members"
                         id="members"
                         placeholder="Add members..."

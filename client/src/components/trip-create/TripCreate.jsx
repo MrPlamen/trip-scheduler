@@ -37,13 +37,13 @@ export default function TripCreate() {
                 <div className="container">
 
                     <h1>Create a Trip</h1>
-                    <label htmlFor="title">Legendary title:</label>
+                    <label htmlFor="title">Trip title:</label>
                     <input type="text" id="title" name="title" placeholder="Enter trip title..." required />
 
                     <label htmlFor="category">Category:</label>
                     <input type="text" id="category" name="category" placeholder="Enter trip category..." required />
 
-                    <label htmlFor="duration">Length:</label>
+                    <label htmlFor="duration">Duration in days:</label>
                     <input type="number" id="days" name="duration" min="1" placeholder="1" required />
 
                     <label htmlFor="imageUrl">Image:</label>
