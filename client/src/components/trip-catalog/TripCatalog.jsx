@@ -9,12 +9,19 @@ export default function TripCatalog() {
 
     const userTrips = trips.filter(trip => Array.isArray(trip.members) && trip.members.includes(email));
 
+    const sortedTrips = userTrips.sort((a, b) => {
+        const startA = new Date(a.startDate);
+        const startB = new Date(b.startDate);
+
+        return startA - startB;
+    });
+
     return (
         <section id="catalog-page">
             <h1>Trips You Are a Part Of</h1>
 
-            {userTrips.length > 0
-                ? userTrips.map(trip => <TripCatalogItem key={trip._id} {...trip} />)
+            {sortedTrips.length > 0
+                ? sortedTrips.map(trip => <TripCatalogItem key={trip._id} {...trip} />)
                 : <h3 className="no-articles">You are not a member of any trips yet.</h3>
             }
         </section>
