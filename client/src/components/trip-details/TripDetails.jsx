@@ -8,6 +8,7 @@ import { useEffect, useState, useCallback } from 'react';
 import likesService from '../../services/likesService';
 import VisitItems from '../visit-items/VisitItems';
 import { useEditItem } from "../../api/visitItemApi";
+import { shortFormatDate } from "../../utils/dateUtil";
 
 import request from '../../utils/request';
 
@@ -162,7 +163,11 @@ export default function TripDetails() {
                     <div className="trip-header">
                         <img className="trip-img" src={trip.imageUrl} alt={trip.title} />
                         <h1>{trip.title}</h1>
-                        <span className="levels">Duration: {trip.duration}</span>
+                        <span className="levels">
+                            <b>{shortFormatDate(trip.startDate)} - {shortFormatDate(trip.endDate)}</b>
+                            {` (${trip.duration} days)`}
+                        </span>
+                        <br />
                         <p className="type">{trip.category}</p>
                     </div>
 
