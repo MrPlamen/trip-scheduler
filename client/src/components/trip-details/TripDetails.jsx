@@ -1,37 +1,34 @@
 import { Link, useNavigate, useParams } from 'react-router';
+import { useEffect, useState, useCallback } from 'react';
+
 import CommentsShow from '../comment-show/CommentsShow';
 import CommentsCreate from '../comments-create/CommentsCreate';
-import commentService from '../../services/commentService';
-import { useDeleteTrip, useTrip } from '../../api/tripApi';
-import useAuth from '../../hooks/useAuth';
-import { useEffect, useState, useCallback } from 'react';
-import likesService from '../../services/likesService';
-import VisitItems from '../visit-items/VisitItems';
-import { useEditItem } from "../../api/visitItemApi";
-import { shortFormatDate } from "../../utils/dateUtil";
+import VisitItemsFetcher from '../visit-items/VisitItemsFetcher';
 
+import commentService from '../../services/commentService';
+import likesService from '../../services/likesService';
+import { useDeleteTrip, useTrip } from '../../api/tripApi';
+import { useEditItem } from "../../api/visitItemApi";
+import useAuth from '../../hooks/useAuth';
+
+import { shortFormatDate } from "../../utils/dateUtil";
 import request from '../../utils/request';
 
 export default function TripDetails() {
     const navigate = useNavigate();
-    const { email, _id: userId } = useAuth();
     const { tripId } = useParams();
     const { trip } = useTrip(tripId);
+    const { email, _id: userId } = useAuth();
     const { deleteTrip } = useDeleteTrip();
     const { edit } = useEditItem();
 
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [visitItems, setVisitItems] = useState([]);
-    const [newVisitItem, setNewVisitItem] = useState({
-        title: '',
-        description: '',
-        imageUrl: ''
-    });
+    const [newVisitItem, setNewVisitItem] = useState({ title: '', description: '', imageUrl: '' });
     const [selectedVisitItem, setSelectedVisitItem] = useState(null);
+    const [visitItemsReloadKey, setVisitItemsReloadKey] = useState(0); // 🔁 trigger reload
 
-    // Fetch comments and likes based on tripId
     useEffect(() => {
         const fetchComments = async () => {
             const fetchedComments = await commentService.getAll(tripId);
@@ -44,50 +41,31 @@ export default function TripDetails() {
             setIsLiked(fetchedLikes.some(like => like.email === email));
         };
 
-        const fetchVisitItems = async () => {
-            try {
-                const fetchedVisitItems = await request.get('http://localhost:3030/jsonstore/visitItems');
-
-                if (fetchedVisitItems) {
-                    const filteredVisitItems = Object.values(fetchedVisitItems).filter(item => item.tripId === tripId);
-                    setVisitItems(filteredVisitItems);
-                } else {
-                    setVisitItems([]);
-                }
-            } catch (error) {
-                console.error('Error fetching visit items:', error);
-            }
-        };
-
         fetchComments();
         fetchLikes();
-        fetchVisitItems();
     }, [tripId, email]);
 
-    // Handle like
     const likeHandler = async () => {
         try {
             const newLike = { email, tripId, like: true, userId };
             await likesService.createTripLike(email, tripId, true, userId);
-            setLikes((prevLikes) => [...prevLikes, newLike]);
+            setLikes((prev) => [...prev, newLike]);
             setIsLiked(true);
         } catch (error) {
             console.error('Error liking the trip:', error);
         }
     };
 
-    // Handle unlike
     const unlikeHandler = async () => {
         try {
             await likesService.delete(email, tripId);
-            setLikes((prevLikes) => prevLikes.filter(like => like.email !== email));
+            setLikes((prev) => prev.filter(like => like.email !== email));
             setIsLiked(false);
         } catch (error) {
             console.error('Error unliking the trip:', error);
         }
     };
 
-    // Handle trip deletion
     const tripDeleteClickHandler = useCallback(async () => {
         const hasConfirm = confirm(`Are you sure you want to delete ${trip.title}?`);
         if (!hasConfirm) return;
@@ -96,14 +74,12 @@ export default function TripDetails() {
         navigate('/trips');
     }, [tripId, deleteTrip, navigate, trip.title]);
 
-    // Handle comment creation
     const commentCreateHandler = useCallback((newComment) => {
-        setComments((prevState) => [...prevState, newComment]);
+        setComments((prev) => [...prev, newComment]);
     }, []);
 
     const visitItemSubmitHandler = async (event) => {
         event.preventDefault();
-
         const members = trip.members;
 
         const visitItemData = {
@@ -116,19 +92,14 @@ export default function TripDetails() {
 
         try {
             if (selectedVisitItem) {
-                // Edit existing visit item
                 await edit(selectedVisitItem._id, visitItemData);
-                setVisitItems((prevState) =>
-                    prevState.map(item => item._id === selectedVisitItem._id ? visitItemData : item)
-                );
             } else {
-                // Create new visit item
                 await request.post('http://localhost:3030/jsonstore/visitItems', visitItemData);
-                setVisitItems((prevState) => [...prevState, visitItemData]);
             }
 
-            setNewVisitItem({ title: '', description: '', imageUrl: '' });  // Clear the form
-            setSelectedVisitItem(null); // Clear the selected item after submission
+            setNewVisitItem({ title: '', description: '', imageUrl: '' });
+            setSelectedVisitItem(null);
+            setVisitItemsReloadKey(prev => prev + 1); // 🔁 reload visit items
         } catch (error) {
             console.error('Error saving visit item:', error);
         }
@@ -136,21 +107,17 @@ export default function TripDetails() {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setNewVisitItem((prevState) => ({
-            ...prevState,
-            [name]: value
-        }));
+        setNewVisitItem(prev => ({ ...prev, [name]: value }));
     };
 
     const editVisitItemHandler = (visitItem) => {
-        setSelectedVisitItem(visitItem);  // This will now work as setSelectedVisitItem is defined
+        setSelectedVisitItem(visitItem);
         setNewVisitItem({
             title: visitItem.title,
             description: visitItem.description,
             imageUrl: visitItem.imageUrl
         });
     };
-
 
     const isOwner = userId === trip?._ownerId;
     const isMember = Array.isArray(trip.members) && trip.members.includes(email);
@@ -200,15 +167,17 @@ export default function TripDetails() {
             </section>
 
             {/* Visit Items Section */}
-            <VisitItems
-                visitItems={visitItems}
+            <VisitItemsFetcher
+                tripId={tripId}
                 email={email}
                 userId={userId}
                 onLike={likeHandler}
                 onEdit={editVisitItemHandler}
-                onAddComment={commentCreateHandler} />
+                onAddComment={commentCreateHandler}
+                reloadTrigger={visitItemsReloadKey}
+            />
 
-            {/* Create Visit Item Form Section */}
+            {/* Create Visit Item Section */}
             {isMember && (
                 <section id="create-visit-item">
                     <h2>{selectedVisitItem ? 'Edit Visit Item' : 'Create Visit Item'}</h2>
@@ -245,7 +214,9 @@ export default function TripDetails() {
                                 required
                             />
                         </div>
-                        <button type="submit" className="button">{selectedVisitItem ? 'Save Changes' : 'Create Visit Item'}</button>
+                        <button type="submit" className="button">
+                            {selectedVisitItem ? 'Save Changes' : 'Create Visit Item'}
+                        </button>
                     </form>
                 </section>
             )}

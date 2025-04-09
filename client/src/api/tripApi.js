@@ -1,34 +1,36 @@
 import { useEffect, useState } from "react";
-import request from "../utils/request";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth"; // Use useAuth for authenticated requests
 
 const baseUrl = `http://localhost:3030/data/trips`;
 
 export const useTrips = () => {
+    const { request } = useAuth(); // Use request from useAuth hook
     const [trips, setTrips] = useState([]);
 
     useEffect(() => {
         request.get(baseUrl)
             .then(setTrips)
-    }, []);
+            .catch(error => console.error("Error fetching trips:", error)); // Error handling
+    }, [request]);
 
     return { trips };
 };
 
 export const useTrip = (tripId) => {
+    const { request } = useAuth(); // Use request from useAuth hook
     const [trip, setTrip] = useState({});
 
     useEffect(() => {
         request.get(`${baseUrl}/${tripId}`)
-            .then(setTrip);
-    }, [tripId])
+            .then(setTrip)
+            .catch(error => console.error("Error fetching trip:", error)); // Error handling
+    }, [tripId, request]);
 
-    return {
-        trip,
-    };
+    return { trip };
 };
 
 export const useLatestTrips = () => {
+    const { request } = useAuth(); // Use request from useAuth hook
     const [latestTrips, setLatestTrips] = useState([]);
     const [error, setError] = useState(null);
 
@@ -50,40 +52,37 @@ export const useLatestTrips = () => {
         };
 
         fetchLatestTrips();
-    }, []);
+    }, [request]);
 
     return { latestTrips, error };
 };
 
 export const useCreateTrip = () => {
-    const { request } = useAuth();
+    const { request } = useAuth(); // Use request from useAuth hook
 
     const create = (tripData) =>
-        request.post(baseUrl, tripData);
+        request.post(baseUrl, tripData)
+            .catch(error => console.error("Error creating trip:", error)); // Error handling
 
-    return {
-        create,
-    }
+    return { create };
 };
 
 export const useEditTrip = () => {
-    const { request } = useAuth();
+    const { request } = useAuth(); // Use request from useAuth hook
 
     const edit = (tripId, tripData) =>
-        request.put(`${baseUrl}/${tripId}`, { ...tripData, _id: tripId });
+        request.put(`${baseUrl}/${tripId}`, { ...tripData, _id: tripId })
+            .catch(error => console.error("Error editing trip:", error)); // Error handling
 
-    return {
-        edit,
-    }
+    return { edit };
 };
 
 export const useDeleteTrip = () => {
-    const { request } = useAuth();
+    const { request } = useAuth(); // Use request from useAuth hook
 
     const deleteTrip = (tripId) =>
-        request.delete(`${baseUrl}/${tripId}`);
+        request.delete(`${baseUrl}/${tripId}`)
+            .catch(error => console.error("Error deleting trip:", error)); // Error handling
 
-    return {
-        deleteTrip,
-    }
+    return { deleteTrip };
 };

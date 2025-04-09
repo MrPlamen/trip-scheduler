@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import request from "../utils/request";
 
 const baseUrl = `http://localhost:3030/jsonstore/visitItems`;
 
@@ -27,17 +26,20 @@ export const useDeleteItem = () => {
 };
 
 export const useVisitItems = () => {
+    const { request } = useAuth(); 
     const [visitItems, setVisitItems] = useState([]);
 
     useEffect(() => {
         request.get(baseUrl)
             .then(setVisitItems)
-    }, []);
+            .catch(err => console.error("Error fetching visit items:", err));
+    }, [request]);
 
     return { visitItems };
 };
 
 export const useVisitItem = (visitItemId) => {
+    const { request } = useAuth(); 
     const [visitItem, setVisitItem] = useState({});
 
     const fetchVisitItem = async () => {
@@ -45,16 +47,16 @@ export const useVisitItem = (visitItemId) => {
             const fetchedVisitItem = await request.get(`${baseUrl}/${visitItemId}`);
             setVisitItem(fetchedVisitItem);
         } catch (error) {
-            console.error('Error fetching visit item:', error);
+            console.error("Error fetching visit item:", error);
         }
     };
 
     useEffect(() => {
         fetchVisitItem();
-    }, [visitItemId]);
+    }, [visitItemId, request]); 
 
     return {
         visitItem,
-        refetchVisitItem: fetchVisitItem // Add refetch function
+        refetchVisitItem: fetchVisitItem, 
     };
 };
