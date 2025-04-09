@@ -38,7 +38,7 @@ export const useLatestTrips = () => {
                 const searchParams = new URLSearchParams({
                     sortBy: '_createdOn desc',
                     pageSize: 3,
-                    select: '_id,imageUrl,title',
+                    select: '_id,imageUrl,title,members',
                 });
 
                 const response = await request.get(`${baseUrl}?${searchParams.toString()}`);

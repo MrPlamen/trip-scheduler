@@ -1,9 +1,11 @@
 import { Link } from "react-router";
 import { useLatestTrips } from "../../api/tripApi";
+import useAuth from "../../hooks/useAuth";
 import './Home.css';
 
 export default function Home() {
     const { latestTrips } = useLatestTrips();
+    const { email } = useAuth();
 
     return (
         <section id="welcome-world">
@@ -20,7 +22,9 @@ export default function Home() {
                             <h3>{trip.title}</h3>
                             <br />
                             <div className="data-buttons">
-                                <Link to={`/trips/${trip._id}/details`} className="btn details-btn">Details</Link>
+                                {email && Array.isArray(trip.members) && trip.members.includes(email) && (
+                                    <Link to={`/trips/${trip._id}/details`} className="btn details-btn">Details</Link>
+                                )}
                             </div>
                         </div>
                         <div className="image-latest">
