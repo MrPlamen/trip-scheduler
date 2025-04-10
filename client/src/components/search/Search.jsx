@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSearchTrip } from "../../hooks/useSearchTrip";
 import { useSearchVisitItem } from "../../hooks/useSearchVisitItem";
+import './Search.css';  
 
 const Search = () => {
     const [memberEmail, setMemberEmail] = useState("");  
@@ -8,57 +9,65 @@ const Search = () => {
     const { filteredItems, errorItem } = useSearchVisitItem(memberEmail);
 
     return (
-        <div>
-            <h2>Search Trips</h2>
+        <div className="search-container">
+            <h2 className="search-title">Search trips by member</h2>
 
-            <input
-                type="text"
-                value={memberEmail}
-                onChange={(e) => setMemberEmail(e.target.value)}
-                placeholder="Enter member ID to search"
-            />
-
-            {error && <p>{error}</p>}
-            {errorItem && <p>{errorItem}</p>}
-
-            <div className="search-results search-trips">
-                <ul>
-                    {filteredTrips.length > 0 ? (
-                        filteredTrips.map((trip) => (
-                            <li key={trip._id}>
-                                <img
-                                    src={trip.imageUrl}
-                                    alt={trip.title}
-                                    style={{ width: '200px', height: 'auto' }} // You can adjust the size as needed
-                                />
-                                <p>{trip.title}</p> {/* Display the title of the trip */}
-                            </li>
-                        ))
-                    ) : (
-                        <p>No trips found for this member.</p>
-                    )}
-                </ul>
+            <div className="search-input-container">
+                <label htmlFor="search-email" className="search-label"></label>
+                <input
+                    type="text"
+                    id="search-email"
+                    value={memberEmail}
+                    onChange={(e) => setMemberEmail(e.target.value)}
+                    placeholder="Enter email of the member"
+                    className="search-input"
+                />
             </div>
 
-            <div className="search-results search-visit-points">
-                <ul>
-                    {filteredItems.length > 0 ? (
-                        filteredItems.map((item) => (
-                            <li key={item._id}>
-                                <img
-                                    src={item.imageUrl}
-                                    alt={item.title}
-                                    style={{ width: '200px', height: 'auto' }} // You can adjust the size as needed
-                                />
-                                <p>{item.title}</p> {/* Display the title of the trip */}
-                            </li>
-                        ))
-                    ) : (
-                        <p>No visit points yet for this member.</p>
-                    )}
-                </ul>
-            </div>
+            {error && <p className="error-message">{error}</p>}
+            {errorItem && <p className="error-message">{errorItem}</p>}
 
+            { filteredTrips.length > 0 && (<div className="search-results-container">
+                <div className="search-results search-trips">
+                    <h3>Trips</h3>
+                    <ul className="search-list">
+                        {filteredTrips.length > 0 ? (
+                            filteredTrips.map((trip) => (
+                                <li key={trip._id} className="search-item">
+                                    <img
+                                        src={trip.imageUrl}
+                                        alt={trip.title}
+                                        className="search-item-image"
+                                    />
+                                    <p className="search-item-title">{trip.title}</p>
+                                </li>
+                            ))
+                        ) : (
+                            <p>No trips found for this member.</p>
+                        )}
+                    </ul>
+                </div>
+
+                <div className="search-results search-visit-points">
+                    <h3>Visit Points</h3>
+                    <ul className="search-list">
+                        {filteredItems.length > 0 ? (
+                            filteredItems.map((item) => (
+                                <li key={item._id} className="search-item">
+                                    <img
+                                        src={item.imageUrl}
+                                        alt={item.title}
+                                        className="search-item-image"
+                                    />
+                                    <p className="search-item-title">{item.title}</p>
+                                </li>
+                            ))
+                        ) : (
+                            <p className="no-items-result">No visit points found for this member.</p>
+                        )}
+                    </ul>
+                </div>
+            </div>)}
         </div>
     );
 };

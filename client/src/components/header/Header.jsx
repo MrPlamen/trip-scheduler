@@ -18,12 +18,11 @@ export default function Header() {
             <nav className="hero-nav">
 
                 <Link className="nav-link" to="/">Home</Link>
-                <Link className="nav-link" to="/trips">My Trips</Link>
+                <Link className="nav-link" to="/search">Search</Link>
 
                 {username || email ? (
                     <>
                         <Link className="nav-link" to="/visits">My visit points</Link>
-                        <Link className="nav-link" to="/search">Search</Link>
                         <Link className="nav-link" to="/trips/create">Create Trip</Link>
                         <Link className="nav-link" to="/logout">
                             Logout (

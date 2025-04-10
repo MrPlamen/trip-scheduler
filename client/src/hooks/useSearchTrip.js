@@ -10,15 +10,12 @@ export const useSearchTrip = (memberEmail) => {
     useEffect(() => {
         const fetchTripsByMember = async () => {
             try {
-                // Fetch all trips
                 const trips = await request.get(baseUrl);
                 
-                // Filter trips where memberEmail exists in the members array
                 const tripsWithMember = trips.filter(trip =>
-                    trip.members && trip.members.includes(memberEmail) // Adjust the condition based on how members are stored
+                    trip.members && trip.members.includes(memberEmail)
                 );
                 
-                // Set the filtered trips to state
                 setFilteredTrips(tripsWithMember);
             } catch (error) {
                 setError("Failed to fetch trips.");
@@ -29,7 +26,7 @@ export const useSearchTrip = (memberEmail) => {
         if (memberEmail) {
             fetchTripsByMember();
         }
-    }, [memberEmail]); // Re-run when memberEmail changes
+    }, [memberEmail]); 
 
     return { filteredTrips, error };
 };
