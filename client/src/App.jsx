@@ -9,11 +9,12 @@ import Login from './components/login/Login'
 import TripCatalog from './components/trip-catalog/TripCatalog'
 import TripDetails from './components/trip-details/TripDetails'
 import TripEdit from './components/trip-edit/TripEdit'
-import './App.css'
 import Logout from './components/logout/Logout'
 import VisitItemCatalog from './components/item-catalog/VisitItemCatalog'
 import VisitItemDetails from './components/item-details/VisitItemDetails'
 import Search from './components/search/Search'
+import PrivateRoute from './components/PrivateRoute'
+import './App.css'
 
 function App() {
   const [authData, setAuthData] = useState({});
@@ -27,23 +28,53 @@ function App() {
   };
 
   return (
-    <UserContext.Provider value={{...authData, userLoginHandler, userLogoutHandler}}>
+    <UserContext.Provider value={{ ...authData, userLoginHandler, userLogoutHandler }}>
       <div id="hero-header">
         <Header />
 
         <main id="main-content">
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/trips/create' element={<TripCreate />} />
-            <Route path='/trips/:tripId/details' element={<TripDetails />} />
-            <Route path='/visits/:visitItemId/details' element={<VisitItemDetails />} />
-            <Route path='/trips/:tripId/edit' element={<TripEdit />} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/trips' element={<TripCatalog />} />
             <Route path='/search' element={<Search />} />
-            <Route path='/visits' element={<VisitItemCatalog />} />
-            <Route path='/logout' element={<Logout />} />
+
+            {/* Protected Routes */}
+            <Route path='/trips/create' element={
+              <PrivateRoute>
+                <TripCreate />
+              </PrivateRoute>
+            } />
+            <Route path='/trips/:tripId/edit' element={
+              <PrivateRoute>
+                <TripEdit />
+              </PrivateRoute>
+            } />
+            <Route path='/trips' element={
+              <PrivateRoute>
+                <TripCatalog />
+              </PrivateRoute>
+            } />
+            <Route path='/visits' element={
+              <PrivateRoute>
+                <VisitItemCatalog />
+              </PrivateRoute>
+            } />
+            <Route path='/trips/:tripId/details' element={
+              <PrivateRoute>
+                <TripDetails />
+              </PrivateRoute>
+            } />
+            <Route path='/visits/:visitItemId/details' element={
+              <PrivateRoute>
+                <VisitItemDetails />
+              </PrivateRoute>
+            } />
+            <Route path='/logout' element={
+              <PrivateRoute>
+                <Logout />
+              </PrivateRoute>
+            } />
           </Routes>
         </main>
       </div>
@@ -51,4 +82,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
