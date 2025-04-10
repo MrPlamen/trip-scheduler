@@ -124,6 +124,14 @@
     color: white;
 }
 
+.edt-btn, .edit-details-btn {
+    background-color: #6f5d9c !important;
+}
+
+.edt-btn:hover, .edit-details-btn:hover {
+    background-color: #5f349c !important;
+}
+
 .trip-img {
     margin-bottom: 20px;
 }
@@ -279,4 +287,13 @@
     padding-bottom: 0px !important;
   }
   
+  #visit-items {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+  }
   
+  #visit-items h2 {
+    display: block;
+    margin-bottom: 12px;
+  }

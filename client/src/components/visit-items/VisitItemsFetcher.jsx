@@ -21,7 +21,7 @@ export default function VisitItemsFetcher({ tripId, email, userId, onLike, onEdi
 
     useEffect(() => {
         fetchVisitItems();
-    }, [fetchVisitItems, reloadTrigger]); // Trigger reload when reloadTrigger changes
+    }, [fetchVisitItems, reloadTrigger]); 
 
     return (
         <VisitItems
