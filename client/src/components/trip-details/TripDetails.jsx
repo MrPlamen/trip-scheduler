@@ -1,16 +1,13 @@
 import { Link, useNavigate, useParams } from 'react-router';
 import { useEffect, useState, useCallback } from 'react';
-
 import CommentsShow from '../comment-show/CommentsShow';
 import CommentsCreate from '../comments-create/CommentsCreate';
 import VisitItemsFetcher from '../visit-items/VisitItemsFetcher';
-
 import commentService from '../../services/commentService';
 import likesService from '../../services/likesService';
 import { useDeleteTrip, useTrip } from '../../api/tripApi';
 import { useEditItem } from "../../api/visitItemApi";
 import useAuth from '../../hooks/useAuth';
-
 import { shortFormatDate } from "../../utils/dateUtil";
 import request from '../../utils/request';
 
@@ -21,13 +18,12 @@ export default function TripDetails() {
     const { email, _id: userId } = useAuth();
     const { deleteTrip } = useDeleteTrip();
     const { edit } = useEditItem();
-
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
     const [newVisitItem, setNewVisitItem] = useState({ title: '', description: '', imageUrl: '' });
     const [selectedVisitItem, setSelectedVisitItem] = useState(null);
-    const [visitItemsReloadKey, setVisitItemsReloadKey] = useState(0); // 🔁 trigger reload
+    const [visitItemsReloadKey, setVisitItemsReloadKey] = useState(0); 
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -99,7 +95,7 @@ export default function TripDetails() {
 
             setNewVisitItem({ title: '', description: '', imageUrl: '' });
             setSelectedVisitItem(null);
-            setVisitItemsReloadKey(prev => prev + 1); // 🔁 reload visit items
+            setVisitItemsReloadKey(prev => prev + 1); 
         } catch (error) {
             console.error('Error saving visit item:', error);
         }
@@ -144,7 +140,7 @@ export default function TripDetails() {
 
                     {isOwner && (
                         <div className="buttons">
-                            <Link to={`/trips/${tripId}/edit`} className="button">Edit</Link>
+                            <Link to={`/trips/${tripId}/edit`} className="button edit-details-btn">Edit</Link>
                             <button onClick={tripDeleteClickHandler} className="button">Delete</button>
                         </div>
                     )}

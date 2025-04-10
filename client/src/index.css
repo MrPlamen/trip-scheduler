@@ -98,3 +98,7 @@ label {
 #trip-details h2 {
   margin-bottom: 8px;
 }
+
+.edit-details-btn {
+  padding-top: 2px;
+}

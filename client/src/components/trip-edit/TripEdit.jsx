@@ -117,6 +117,7 @@ export default function TripEdit() {
                         className="calendar-picker"
                         id="startDate"
                         name="startDate"
+                        value={formData.startDate}
                         onChange={handleInputChange}
                         required
                     />
@@ -127,6 +128,7 @@ export default function TripEdit() {
                         className="calendar-picker"
                         id="endDate"
                         name="endDate"
+                        value={formData.startDate}
                         onChange={handleInputChange}
                         required
                     />
