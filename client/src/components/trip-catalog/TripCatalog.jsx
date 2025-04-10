@@ -7,7 +7,10 @@ export default function TripCatalog() {
     const { trips } = useTrips(); 
     const { email } = useContext(UserContext);  
 
-    const userTrips = trips.filter(trip => Array.isArray(trip.members) && trip.members.includes(email));
+    const userTrips = Array.isArray(trips) 
+    ? trips.filter(trip => Array.isArray(trip.members) && trip.members.includes(email)) 
+    : [];
+
 
     const sortedTrips = userTrips.sort((a, b) => {
         const startA = new Date(a.startDate);

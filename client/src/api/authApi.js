@@ -4,7 +4,6 @@ import { UserContext } from "../contexts/UserContext";
 
 const baseUrl = 'http://localhost:3030/users';
 
-// --- LOGIN ---
 export const useLogin = () => {
     const login = async (email, password) => {
         return request.post(`${baseUrl}/login`, { email, password });
@@ -13,11 +12,8 @@ export const useLogin = () => {
     return { login };
 };
 
-// --- REGISTER ---
 export const useRegister = () => {
     const register = async (email, username, password) => {
-        // You can add debug logs *inside* the function if needed
-        console.log("[REGISTER] email:", email, "password:", password, "username:", username);
 
         return request.post(`${baseUrl}/register`, { email, username, password });
     };
@@ -25,7 +21,6 @@ export const useRegister = () => {
     return { register };
 };
 
-// --- LOGOUT ---
 export const useLogout = () => {
     const { accessToken, userLogoutHandler } = useContext(UserContext);
 
