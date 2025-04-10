@@ -203,7 +203,7 @@ export default function VisitItemDetails() {
 
                 {isOwner && !editItem && (
                     <div className="buttons">
-                        <button onClick={() => editVisitItemHandler(visitItem)} className="button">Edit</button>
+                        <button onClick={() => editVisitItemHandler(visitItem)} className="button edit-details-btn">Edit</button>
                         <button onClick={itemDeleteClickHandler} className="button">Delete</button>
                     </div>
                 )}

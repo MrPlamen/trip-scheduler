@@ -108,7 +108,7 @@ export default function VisitItems({ visitItems, email, userId, onEdit }) {
 
                                     {isOwner && (
                                         <div className="buttons">
-                                            <button onClick={() => onEdit(item)} className="button edt-btn">Edit</button>
+                                            <button onClick={() => onEdit(item)} className="button edt-btn edit-details-btn">Edit</button>
                                             <button onClick={() => itemDeleteClickHandler(item._id)} className="button">Delete</button>
                                         </div>
                                     )}
