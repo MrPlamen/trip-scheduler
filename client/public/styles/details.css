@@ -2,7 +2,7 @@
     position: relative;
     display: block;
     width: 980px;
-    margin: 90px auto;
+    margin: 40px auto;
     overflow: hidden;
     border-radius: 10px;
     transition: all 0.4s;
@@ -337,7 +337,7 @@
   }
   
   .submit-btn {
-    background-color: #58358e;
+    background-color: #4f54bb; 
     color: white;
     padding: 0.6rem 1.2rem;
     font-weight: bold;
@@ -348,6 +348,6 @@
   }
   
   .submit-btn:hover {
-    background-color: #3b2163;
+    background-color: #454aa5;
   }
   
