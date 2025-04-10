@@ -1613,6 +1613,21 @@
                 "_createdOn": 1743626089406,
                 "_id": "67e8a489-d844-4bda-85c9-66e7cb5bcb2c"
             }
+        ],
+        visitItems: [
+            {
+                "title": "Zaragoza",
+                "description": "A city in northern Spain",
+                "imageUrl": "https://www.bordersofadventure.com/wp-content/uploads/2021/03/Madrid-to-Zaragoza-city-trip.jpg",
+                "tripId": "0",
+                "members": [
+                    "pvpetrov1@abv.bg",
+                    "admin@abv.bg"
+                ],
+                "_ownerId": "8a9490a2-ae51-4327-ab80-64b325db8681",
+                "_createdOn": 1744293205645,
+                "_id": "e47feae6-aab6-4dd7-a33b-70343517e824"
+            }
         ]
     };
     var rules$1 = {

@@ -15,11 +15,11 @@ export const useLogin = () => {
 
 // --- REGISTER ---
 export const useRegister = () => {
-    const register = async (email, password, username) => {
+    const register = async (email, username, password) => {
         // You can add debug logs *inside* the function if needed
         console.log("[REGISTER] email:", email, "password:", password, "username:", username);
 
-        return request.post(`${baseUrl}/register`, { email, password, username });
+        return request.post(`${baseUrl}/register`, { email, username, password });
     };
 
     return { register };
