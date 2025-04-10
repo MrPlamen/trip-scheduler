@@ -1,17 +1,15 @@
+import { useContext } from "react";
 import commentService from "../../services/commentService";
+import { UserContext } from "../../contexts/UserContext"; 
 
-export default function CommentsCreate({
-    email,
-    tripId,
-    onCreate,
-}) {
+export default function CommentsCreate({ tripId, onCreate }) {
+    const { email, username } = useContext(UserContext); 
+
     const commentAction = async (formData) => {
         const comment = formData.get('comment');
-
-        const createdComment = await commentService.create(email, tripId, comment);
-
+        const createdComment = await commentService.create(username, email, tripId, comment);
         onCreate(createdComment);
-    }
+    };
 
     return (
         <article className="create-comment">
@@ -37,6 +35,5 @@ export default function CommentsCreate({
                 </div>
             </form>
         </article>
-
     );
 }

@@ -10,7 +10,7 @@ export default {
 
         return tripComments;
     },
-    create(email, tripId, comment) {
-        return request.post(baseUrl, { email, tripId, comment });
+    create(username, email, tripId, comment) {
+        return request.post(baseUrl, { username, email, tripId, comment });
     }
 };
