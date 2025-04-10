@@ -1612,6 +1612,24 @@
                 "ownerId": "pvpetrov1@abv.bg",
                 "_createdOn": 1743626089406,
                 "_id": "67e8a489-d844-4bda-85c9-66e7cb5bcb2c"
+            },
+            {
+                "_ownerId": "3b8771e9-c842-4f21-b7b4-d264f9a3c692",
+                "title": "Italy",
+                "category": "late spring vacation",
+                "startDate": "2025-05-28",
+                "endDate": "2025-06-07",
+                "imageUrl": "https://assets.vogue.com/photos/65f04d926294babad5413eb1/16:9/w_5760,h_3240,c_limit/GettyImages-1380534040.jpg",
+                "members": [
+                    "pvpetrov1@abv.bg",
+                    "admin@abv.bg",
+                    "john@email.com"
+                ],
+                "summary": "I don't have a specific plan yet, guys, feel free to suggest",
+                "owner": "pvpetrov1@abv.bg",
+                "duration": 10,
+                "_createdOn": 1744298038878,
+                "_id": "1ac286c1-8230-480f-8b42-ba5c8033d2c4"
             }
         ],
         visitItems: [

@@ -1,13 +1,15 @@
 import { useNavigate } from 'react-router';
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { useCreateTrip } from '../../api/tripApi';
 import { calculateDuration } from '../../utils/dateUtil';
 
 export default function TripCreate() {
     const navigate = useNavigate();
-    const { create: createTrip } = useCreateTrip(); 
+    const { create: createTrip } = useCreateTrip();
     const { email } = useContext(UserContext);
+    const [members, setMembers] = useState("");
+    const [membersArray, setMembersArray] = useState([]);
 
     const submitAction = async (formData) => {
 
@@ -28,6 +30,19 @@ export default function TripCreate() {
         await createTrip(tripData);
 
         navigate('/trips');
+    };
+
+    const handleChange = (e) => {
+        const { value } = e.target;
+        setMembers(value);
+
+        // Process the input: split by commas, trim spaces, and filter empty values
+        const emails = value
+            .split(",")
+            .map(email => email.trim()) // Trim spaces around each email
+            .filter(email => email !== ""); // Remove empty strings
+
+        setMembersArray(emails); // Save the processed list of emails
     };
 
     return (
@@ -54,9 +69,24 @@ export default function TripCreate() {
 
                     <label htmlFor="imageUrl">Image:</label>
                     <input type="text" id="imageUrl" name="imageUrl" placeholder="Upload a photo..." required />
-                    
-                    <label htmlFor="members">Trip members:</label>
-                    <input type="email" name="members" id="members" placeholder="Add members..." />
+
+                    <label htmlFor="members">Trip members <span className="field-info">(comma-separated)</span>:</label>
+                    <input
+                        type="text"
+                        name="members"
+                        id="members"
+                        placeholder="member1@mail.com, member2@mail.com..."
+                        value={members}
+                        onChange={handleChange}
+                    />
+                    <div>
+                        <h3 className='members-list-head'>Members list:</h3>
+                        <ul>
+                            {membersArray.map((email, index) => (
+                                <li key={index}>{email}</li>
+                            ))}
+                        </ul>
+                    </div>
 
                     <label htmlFor="summary">Summary:</label>
                     <textarea name="summary" id="summary" required></textarea>
