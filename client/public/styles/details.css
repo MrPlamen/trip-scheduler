@@ -203,16 +203,12 @@
     background-color: #f1f1f1;
 }
 
-.visit-item-card {
-    display: flex;
-    background-color: whitesmoke;
-}
-
 #create-visit-item {
-    background-color: whitesmoke;
+    background-color: white;
     padding: 28px 24px;
     margin-top: 38px;
     border-radius: 8px;
+    width: 480px;
 }
 
 #create-visit-item button {
@@ -223,3 +219,64 @@
 #create-visit-item h2 {
     margin-bottom: 8px;
 }
+
+.visit-item-card {
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .visit-item-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .visit-item-card img {
+    width: 160px;
+    height: auto;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    object-fit: cover;
+  }
+  
+  .visit-item-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .visit-item-card p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .visit-item-card .visit-item-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+  
+  .visit-item-card .button {
+    padding: 0.5rem 1rem;
+    /* border-radius: 0.3rem; */
+    margin-bottom: 4px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+
+  .likes-section .buttons{
+    padding-right: 0px !important;
+    padding-bottom: 0px !important;
+  }
+  
+  
