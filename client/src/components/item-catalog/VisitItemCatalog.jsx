@@ -7,7 +7,7 @@ export default function VisitItemCatalog() {
     const { visitItems } = useVisitItems(); 
     const { email } = useContext(UserContext);  
 
-    const visitItemsArray = Object.values(visitItems);
+    const visitItemsArray = visitItems ? Object.values(visitItems) : [];
 
     const userItems = visitItemsArray.filter(visitItem => Array.isArray(visitItem.members) && visitItem.members.includes(email));
 
