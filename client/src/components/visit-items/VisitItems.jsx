@@ -83,20 +83,20 @@ export default function VisitItems({ visitItems, email, userId, onEdit }) {
 
     return (
         <>
-        <h2>Visit points</h2>
-        <div id="visit-items">
-            {visitItems && Object.values(visitItems).length > 0 ? (
-                Object.values(visitItems).map((item) => {
-                    if (!item) return null;
+            <h2>Visit points</h2>
+            <div id="visit-items">
+                {visitItems && Object.values(visitItems).length > 0 ? (
+                    Object.values(visitItems).map((item) => {
+                        if (!item) return null;
 
-                    const userLikeForItem = likes.find(like => like.email === email && like.visitItemId === item._id);
-                    const isOwner = userId === item?._ownerId;
+                        const userLikeForItem = likes.find(like => like.email === email && like.visitItemId === item._id);
+                        const isOwner = userId === item?._ownerId;
 
-                    return (
-                        <Link to={`/visits/${item._id}/details`} className="visit-item-card-link">
+                        return (
                             <div key={item._id} className="visit-item-card">
                                 <img src={item.imageUrl} alt={item.title} />
                                 <h3>{item.title}</h3>
+                                <p><Link to={`/visits/${item._id}/details`} className="visit-item-card-link">Details</Link></p>
                                 <p>{item.description}</p>
                                 <span>Likes: {getLikeCount(item._id)}</span>
                                 <div className="likes-section">
@@ -114,13 +114,12 @@ export default function VisitItems({ visitItems, email, userId, onEdit }) {
                                     )}
                                 </div>
                             </div>
-                        </Link>
-                    );
-                })
-            ) : (
-                <p>No visit items for this trip yet.</p>
-            )}
-        </div>
+                        );
+                    })
+                ) : (
+                    <p>No visit items for this trip yet.</p>
+                )}
+            </div>
         </>
     );
 }

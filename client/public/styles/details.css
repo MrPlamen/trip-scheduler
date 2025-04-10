@@ -275,6 +275,7 @@
     padding: 0.5rem 1rem;
     /* border-radius: 0.3rem; */
     margin-bottom: 4px;
+    min-height: 42px;
     border: none;
     color: #fff;
     cursor: pointer;
@@ -350,4 +351,5 @@
   .submit-btn:hover {
     background-color: #454aa5;
   }
+  
   
