@@ -363,3 +363,28 @@
     margin-top: 30px;
   }
   
+  .members-box {
+    background-color: #f7f7f7;
+    display: block;
+    border-top: 1px solid gray;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1.5rem;
+}
+
+.members-box h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.members-box ul {
+    list-style: none;
+    padding-left: 1rem;
+    margin: 0;
+}
+
+.members-box li {
+    margin-bottom: 0.3rem;
+    color: #555;
+}

@@ -161,6 +161,17 @@ export default function TripDetails() {
                             <button onClick={likeHandler} className="button">Like</button>
                         )}
                     </div>
+
+                    {Array.isArray(trip.members) && trip.members.length > 0 && (
+                        <div className="members-box">
+                            <h3>Trip Members ({trip.members.length})</h3>
+                            <ul>
+                                {trip.members.map((memberEmail, index) => (
+                                    <li key={index}>{memberEmail}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
 
                 <CommentsCreate
