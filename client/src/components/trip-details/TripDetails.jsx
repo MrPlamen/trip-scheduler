@@ -23,7 +23,7 @@ export default function TripDetails() {
     const [isLiked, setIsLiked] = useState(false);
     const [newVisitItem, setNewVisitItem] = useState({ title: '', description: '', imageUrl: '' });
     const [selectedVisitItem, setSelectedVisitItem] = useState(null);
-    const [visitItemsReloadKey, setVisitItemsReloadKey] = useState(0); 
+    const [visitItemsReloadKey, setVisitItemsReloadKey] = useState(0);
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -95,7 +95,7 @@ export default function TripDetails() {
 
             setNewVisitItem({ title: '', description: '', imageUrl: '' });
             setSelectedVisitItem(null);
-            setVisitItemsReloadKey(prev => prev + 1); 
+            setVisitItemsReloadKey(prev => prev + 1);
         } catch (error) {
             console.error('Error saving visit item:', error);
         }
@@ -140,8 +140,15 @@ export default function TripDetails() {
 
                     {isOwner && (
                         <div className="buttons">
-                            <Link to={`/trips/${tripId}/edit`} className="button edit-details-btn">Edit</Link>
-                            <button onClick={tripDeleteClickHandler} className="button">Delete</button>
+                            <button
+                                onClick={() => navigate(`/trips/${tripId}/edit`)}
+                                className="button edit-details-btn"
+                            >
+                                Edit
+                            </button>
+                            <button onClick={tripDeleteClickHandler} className="button">
+                                Delete
+                            </button>
                         </div>
                     )}
 
