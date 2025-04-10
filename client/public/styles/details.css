@@ -208,6 +208,18 @@
     background-color: whitesmoke;
 }
 
-.create-visit-item {
+#create-visit-item {
     background-color: whitesmoke;
+    padding: 28px 24px;
+    margin-top: 38px;
+    border-radius: 8px;
+}
+
+#create-visit-item button {
+    margin-top: 18px;
+    border-radius: 3px;
+}
+
+#create-visit-item h2 {
+    margin-bottom: 8px;
 }

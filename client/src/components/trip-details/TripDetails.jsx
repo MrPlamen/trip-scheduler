@@ -10,6 +10,7 @@ import { useEditItem } from "../../api/visitItemApi";
 import useAuth from '../../hooks/useAuth';
 import { shortFormatDate } from "../../utils/dateUtil";
 import request from '../../utils/request';
+import "../../../public/styles/details.css";
 
 export default function TripDetails() {
     const navigate = useNavigate();
@@ -183,7 +184,7 @@ export default function TripDetails() {
             {/* Create Visit Item Section */}
             {isMember && (
                 <section id="create-visit-item">
-                    <h2>{selectedVisitItem ? 'Edit Visit Item' : 'Create Visit Item'}</h2>
+                    <h2>{selectedVisitItem ? 'Edit visit item' : 'Create a visit point'}</h2>
                     <form onSubmit={visitItemSubmitHandler}>
                         <div>
                             <label htmlFor="title">Title:</label>
@@ -218,7 +219,7 @@ export default function TripDetails() {
                             />
                         </div>
                         <button type="submit" className="button">
-                            {selectedVisitItem ? 'Save Changes' : 'Create Visit Item'}
+                            {selectedVisitItem ? 'Save changes' : 'Create visit point'}
                         </button>
                     </form>
                 </section>
