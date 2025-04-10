@@ -18,10 +18,9 @@ export default function TripCatalogItem({
                 <h2>{title}</h2>
                 <h6>{category}</h6>
                 <h6>
-                    <b>{shortFormatDate(startDate)} - {shortFormatDate(endDate)}</b>
+                    {shortFormatDate(startDate)} - {shortFormatDate(endDate)}
                     {` (${duration} days)`}
                 </h6>
-                <p>{summary}</p>
                 <Link to={`/trips/${_id}/details`} className="details-button">Details</Link>
             </div>
         </div>
