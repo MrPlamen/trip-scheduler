@@ -1,72 +1,47 @@
-import { useEffect } from "react";
-import { useContext } from "react";
-import request from "../utils/request"
+import { useEffect, useContext } from "react";
+import request from "../utils/request";
 import { UserContext } from "../contexts/UserContext";
 
 const baseUrl = 'http://localhost:3030/users';
 
+// --- LOGIN ---
 export const useLogin = () => {
-    const login = async (email, password) =>
-        request.post(
-            `${baseUrl}/login`,
-            { email, password },
-        );
+    const login = async (email, password) => {
+        return request.post(`${baseUrl}/login`, { email, password });
+    };
 
-    return {
-        login,
-    }
+    return { login };
 };
 
+// --- REGISTER ---
 export const useRegister = () => {
-    const register = (email, password, username) =>
-        request.post(`${baseUrl}/register`, { email, password, username });
+    const register = async (email, password, username) => {
+        // You can add debug logs *inside* the function if needed
+        console.log("[REGISTER] email:", email, "password:", password, "username:", username);
 
-    return {
-        register,
-    }
+        return request.post(`${baseUrl}/register`, { email, password, username });
+    };
+
+    return { register };
 };
 
+// --- LOGOUT ---
 export const useLogout = () => {
     const { accessToken, userLogoutHandler } = useContext(UserContext);
 
     useEffect(() => {
-        if (!accessToken) {
-            return;
-        }
+        if (!accessToken) return;
 
         const options = {
             headers: {
                 'X-Authorization': accessToken,
-            }
+            },
         };
 
         request.get(`${baseUrl}/logout`, null, options)
-            .then(userLogoutHandler);
-
+            .then(userLogoutHandler)
+            .catch((err) => console.error("Logout failed:", err));
     }, [accessToken, userLogoutHandler]);
 
-    return {
-        isLoggedOut: !!accessToken,
-    };
+    return { isLoggedOut: !!accessToken };
 };
-
-
-// export const useEmailExists = async (email) => {
-//     try {
-//         const users = await request.get(`${baseUrl}`);
-
-//         if (!Array.isArray(users) || users.length === 0) {
-//             return false; 
-//         }
-
-//         const emailExists = users.some(user => user.email === email);
-
-//         return !!emailExists[2];
-//     } catch (error) {
-//         console.error("Error checking email existence:", error);
-//         return false; 
-//     }
-// };
-
-
-
