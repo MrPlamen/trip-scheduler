@@ -101,3 +101,7 @@ label {
 /* .edit-details-btn {
   padding-top: 2px;
 } */
+
+.details-btn {
+  color: gray;
+}
