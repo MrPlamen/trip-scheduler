@@ -15,11 +15,28 @@ export default function CommentsCreate({
 
     return (
         <article className="create-comment">
-            <label>Add new comment:</label>
-            <form className="form" action={commentAction}>
-                <textarea name="comment" placeholder="Comment......"></textarea>
-                <input className="btn submit" type="submit" value="Add Comment" />
+            <h3 className="comment-heading">Add a new comment</h3>
+            <form className="comment-form" action={commentAction}>
+                <div className="form-group">
+                    <label htmlFor="comment" className="form-label"></label>
+                    <textarea
+                        id="comment"
+                        name="comment"
+                        placeholder="Write your thoughts here..."
+                        className="form-textarea"
+                        rows="4"
+                        required
+                    ></textarea>
+                </div>
+                <div className="form-actions">
+                    <input
+                        type="submit"
+                        value="Add Comment"
+                        className="btn submit-btn"
+                    />
+                </div>
             </form>
         </article>
+
     );
 }

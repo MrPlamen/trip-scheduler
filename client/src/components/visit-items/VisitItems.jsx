@@ -83,7 +83,7 @@ export default function VisitItems({ visitItems, email, userId, onEdit }) {
 
     return (
         <>
-        <h2>Visit Items</h2>
+        <h2>Visit points</h2>
         <div id="visit-items">
             {visitItems && Object.values(visitItems).length > 0 ? (
                 Object.values(visitItems).map((item) => {
