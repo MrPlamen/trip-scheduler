@@ -203,3 +203,11 @@
     background-color: #f1f1f1;
 }
 
+.visit-item-card {
+    display: flex;
+    background-color: whitesmoke;
+}
+
+.create-visit-item {
+    background-color: whitesmoke;
+}

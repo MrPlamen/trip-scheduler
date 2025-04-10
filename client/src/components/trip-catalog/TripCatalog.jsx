@@ -21,7 +21,7 @@ export default function TripCatalog() {
 
     return (
         <section id="catalog-page">
-            <h1>Trips You Are a Part Of</h1>
+            <h1>Trips you are a part of</h1>
 
             {sortedTrips.length > 0
                 ? sortedTrips.map(trip => <TripCatalogItem key={trip._id} {...trip} />)
