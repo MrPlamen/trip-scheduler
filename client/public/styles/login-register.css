@@ -1,9 +1,9 @@
 #login-page {
     position: relative;
-    width: 650px;
+    width: 600px;
     height: auto;
     border-radius: 20px;
-    padding: 40px;
+    padding: 20px;
     box-sizing: border-box;
     background: white;
     box-shadow: 0 4px 8px 3px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.3);
@@ -12,10 +12,10 @@
 
 #register-page {
     position: relative;
-    width: 650px;
+    width: 600px;
     height: auto;
     border-radius: 20px;
-    padding: 40px;
+    padding: 20px;
     box-sizing: border-box;
     background: white;
     box-shadow: 0 4px 8px 3px rgba(0,0,0,.15),0 1px 3px rgba(0,0,0,.3);
