@@ -12,8 +12,8 @@ export default function TripCatalogItem({
     summary
 }) {
     return (
-        <div className="allGames">
-            <div className="allGames-info">
+        <div className="allTrips">
+            <div className="allTrips-info">
                 <img src={imageUrl} />
                 <h2>{title}</h2>
                 <h6>{category}</h6>
