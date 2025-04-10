@@ -16,27 +16,27 @@ export default function Home() {
             <div id="home-page">
                 <h1>Latest Trips</h1>
 
-                {latestTrips.map(trip => (
-                    <div className="trip" key={trip._id}>
-                        <div className="trip-text">
-                            <h3>{trip.title}</h3>
-                            <br />
-                            <div className="data-buttons">
-                                {email && Array.isArray(trip.members) && trip.members.includes(email) && (
-                                    <Link to={`/trips/${trip._id}/details`} className="btn details-btn">Details</Link>
-                                )}
+                <div className="trip-slider">
+                    {latestTrips.map(trip => (
+                        <div className="trip" key={trip._id}>
+                            <div className="trip-text">
+                                <h3>{trip.title}</h3>
+                                <br />
+                                <div className="data-buttons">
+                                    {email && Array.isArray(trip.members) && trip.members.includes(email) && (
+                                        <Link to={`/trips/${trip._id}/details`} className="btn details-btn">Details</Link>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="image-latest">
+                                <img src={trip.imageUrl} alt={trip.title} />
                             </div>
                         </div>
-                        <div className="image-latest">
-                            <img src={trip.imageUrl} />
-                        </div>
-                        <div className="trip-footer" />
-                    </div>
-                ))}
-
+                    ))}
+                </div>
 
                 {latestTrips.length === 0 && <p className="no-articles">No trips yet</p>}
             </div>
-        </section >
+        </section>
     );
 }
