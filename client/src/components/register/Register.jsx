@@ -11,36 +11,22 @@ export default function Register() {
 
     const [formData, setFormData] = useState({
         email: "",
-        username: ""
+        username: "",
+        password: "",
+        confirmPassword: ""
     });
 
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name === "email" || name === "username") {
-            setFormData(prev => ({ ...prev, [name]: value }));
-        }
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const registerHandler = async (e) => {
         e.preventDefault();
 
-        const form = new FormData(e.target);
-        const email = form.get("email");
-        const username = form.get("username");
-        const password = form.get("password");
-        const confirmPassword = form.get("confirm-password");
-
-        if (password !== confirmPassword) {
-            setErrorMessage("Password mismatch!");
-            setFormData(prev => ({
-                ...prev,
-                password: "",
-                confirmPassword: "",
-            }));
-            return;
-        }
+        const { email, username, password, confirmPassword } = formData;
 
         try {
             const authData = await register(email, username, password);
@@ -50,8 +36,19 @@ export default function Register() {
                 return;
             }
 
+            if (password !== confirmPassword) {
+                setErrorMessage("Password mismatch!");
+                setFormData(prev => ({
+                    ...prev,
+                    password: "",
+                    confirmPassword: "",
+                }));
+                return;
+            }
+
             userLoginHandler(authData);
             navigate("/");
+
         } catch (error) {
             console.error("Error during registration: ", error);
             setErrorMessage("Registration failed! Please try again.");
@@ -65,7 +62,7 @@ export default function Register() {
                     <div className="brand-logo"></div>
                     <h1>Register</h1>
 
-                    <label className="auth-label" htmlFor="email"> Email:</label>
+                    <label className="auth-label" htmlFor="email">Email:</label>
                     <input
                         type="email"
                         id="email"
@@ -92,15 +89,17 @@ export default function Register() {
                         name="password"
                         value={formData.password}
                         id="register-password"
+                        onChange={handleChange}
                         required
                     />
 
                     <label className="auth-label" htmlFor="confirm-password">Confirm Password:</label>
                     <input
                         type="password"
-                        name="confirm-password"
+                        name="confirmPassword"
                         value={formData.confirmPassword}
                         id="confirm-password"
+                        onChange={handleChange}
                         required
                     />
 
