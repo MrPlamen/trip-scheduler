@@ -1602,6 +1602,8 @@
                 "_ownerId": "3e47df2b-6174-435f-9b3f-2982c57e0a02",
                 "title": "Spain",
                 "category": "summer vacay",
+                "startDate": "2025-06-13",
+                "endDate": "2025-06-18",
                 "duration": "6",
                 "imageUrl": "https://bimg.abv.bg/banners/HTML5/Native/v3_NI_Domain-Boyar_02-04-25.jpg",
                 "members": [
